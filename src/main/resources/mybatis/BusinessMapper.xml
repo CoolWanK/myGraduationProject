@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wjk.demo.mapper.BusinessMapper">
+  <insert id="insert" parameterType="com.wjk.demo.pojo.Business">
+    insert into business (username,password,nickname,email,phone,address,flag,count) values(#{username},#{password},#{nickname},#{email},#{phone},#{address},#{flag},#{count})
+    <selectKey keyProperty="id" order="AFTER" resultType="Integer">
+      SELECT @@IDENTITY AS ID
+    </selectKey>
+  </insert>
+  <select id="findBusinessByPasswrrd" parameterType="string" resultType="business">
+    select * from business where username =#{username} and password = #{password}
+  </select>
+  <update id="insertType" parameterType="type">
+      update business set type_id=#{typeid} where id=#{id}
+  </update>
+  <resultMap id="business1" type="business">
+    <id column="id" property="id"></id>
+    <result column="username" property="username"></result>
+    <result column="password" property="password"></result>
+    <result column="email" property="email"></result>
+    <result column="address" property="address"></result>
+    <result column="phone" property="phone"></result>
+    <result column="nickname" property="nickname"></result>
+    <result column="img" property="img"></result>
+    <result column="description" property="description"></result>
+    <result column="startPrice" property="startPrice"></result>
+    <result column="count" property="count"></result>
+      <association property="type" javaType="com.wjk.demo.pojo.Type">
+        <id column="id" property="id"></id>
+        <result column="name" property="name" />
+      </association>
+  </resultMap>
+  <select id="businessGetType" parameterType="Integer" resultMap="business1">
+    select b.*,t.* from business b left join type t on b.type_id=t.id where b.id=#{id}
+  </select>
+  <update id="update" parameterType="business">
+    update business
+    <trim prefix="set" suffixOverrides=",">
+      <if test="phone!=null">phone=#{phone},</if>
+      <if test="email!=null">email=#{email},</if>
+      <if test="img!=null">img=#{img},</if>
+      <if test="nickname!=null">nickname=#{nickname},</if>
+      <if test="address!=null">address=#{address},</if>
+      <if test="startPrice!=null">startPrice=#{startPrice},</if>
+      <if test="count!=null">count=#{count},</if>
+      <if test="flag!=null">flag=#{flag},</if>
+    </trim>
+   where id=#{id}
+  </update>
+  <select id="findByNickname" resultType="business" parameterType="string">
+    select * from business where nickname=#{nickname}
+  </select>
+  <select id="findAllUsername" resultType="string">
+    SELECT username from business
+  </select>
+  <select id="findAllNickname" resultType="string">
+    SELECT nickname from business
+  </select>
+  <resultMap id="allBusiness" type="business">
+    <id column="id" property="id"></id>
+    <result column="username" property="username"></result>
+    <result column="password" property="password"></result>
+    <result column="email" property="email"></result>
+    <result column="address" property="address"></result>
+    <result column="phone" property="phone"></result>
+    <result column="nickname" property="nickname"></result>
+    <result column="img" property="img"></result>
+    <result column="description" property="description"></result>
+    <result column="startPrice" property="startPrice"></result>
+    <result column="flag" property="flag"></result>
+    <result column="count" property="count"></result>
+  </resultMap>
+  <select id="findAllBusiness" resultMap="allBusiness">
+    select * from business
+  </select>
+  <update id="updateFlag" parameterType="business">
+    update business
+    <trim prefix="set">
+      <if test="flag!=null">flag=#{flag}</if>
+    </trim>
+    where id=#{id}
+  </update>
+  <resultMap id="flagBusiness" type="business">
+    <id column="id" property="id"></id>
+    <result column="username" property="username"></result>
+    <result column="password" property="password"></result>
+    <result column="email" property="email"></result>
+    <result column="address" property="address"></result>
+    <result column="phone" property="phone"></result>
+    <result column="nickname" property="nickname"></result>
+    <result column="img" property="img"></result>
+    <result column="description" property="description"></result>
+    <result column="startPrice" property="startPrice"></result>
+    <result column="flag" property="flag"></result>
+    <result column="count" property="count"></result>
+  </resultMap>
+  <select id="findFlagBusiness" resultMap="flagBusiness">
+    select * from business where flag=1
+  </select>
+  <resultMap id="tagByBusinessId" type="tag">
+    <id property="id" column="id"/>
+    <result property="name" column="name"></result>
+    <collection property="goodsList" ofType="com.wjk.demo.pojo.Goods">
+      <id column="gid" property="id"/>
+      <result column="gname" property="name"/>
+      <result column="gprice" property="price"/>
+      <result column="gimg" property="img"/>
+      <result column="gcount" property="count"/>
+      <association property="business" javaType="com.wjk.demo.pojo.Business">
+        <id column="bid" property="id"></id>
+        <result column="baddress" property="address"></result>
+        <result column="bphone" property="phone"></result>
+        <result column="bnickname" property="nickname"></result>
+        <result column="bimg" property="img"></result>
+        <result column="bstartPrice" property="startPrice"></result>
+        <result column="bcount" property="count"></result>
+      </association>
+    </collection>
+  </resultMap>
+  <select id="findTagByBusinessId" parameterType="Integer" resultMap="tagByBusinessId">
+    select t.*,g.id gid,g.name gname,g.price gprice,g.img gimg,g.count gcount,b.id bid,b.nickname bnickname,b.phone bphone,
+    b.img bimg,b.startPrice bstartPrice,b.address baddress,b.count bcount from goods g inner join business b
+    on g.business_id=b.id inner join tag t on g.tag_id=t.id where b.id=#{id} order by t.id
+  </select>
+  <select id="findBusinessById" parameterType="Integer"  resultType="business">
+    select * from business where id =#{id}
+  </select>
+  <resultMap id="businessByTypeId" type="type">
+    <id property="id" column="id"/>
+    <result property="name" column="name"/>
+    <collection property="businessList" ofType="com.wjk.demo.pojo.Business">
+      <id column="bid" property="id"/>
+      <result property="nickname" column="bnickname"/>
+      <result property="img" column="bimg"/>
+      <result property="count" column="bcount"/>
+      <result property="startPrice" column="bstartPrice"/>
+    </collection>
+  </resultMap>
+  <select id="findBusinessByTypeId" parameterType="Integer" resultMap="businessByTypeId">
+    select t.*,b.id bid,b.nickname bnickname,b.startPrice bstartPrice,b.img bimg ,b.count bcount
+     from business b right join type t on b.type_id=t.id where t.id=#{id} order by b.count desc
+  </select>
+</mapper>

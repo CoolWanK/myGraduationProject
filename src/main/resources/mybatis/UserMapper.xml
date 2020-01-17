@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wjk.demo.mapper.UserMapper">
+  <insert id="insert" parameterType="com.wjk.demo.pojo.User">
+    insert  into user (nickname,username,password,phone,address,photo_register) values(#{nickname},#{username},#{password},#{phone},#{address},#{photo_register})
+  </insert>
+  <select id="getUserById" parameterType="int" resultType="com.wjk.demo.pojo.User">
+    select * from  user where id = #{id}
+  </select>
+  <select id="findByUsernameAndPassword" parameterType="string" resultType="com.wjk.demo.pojo.User">
+        select * from user where username=#{username} and password=#{password}
+  </select>
+  <update id="updateById" parameterType="com.wjk.demo.pojo.User">
+    update user
+    set nickname =#{nickname},address=#{address},phone=#{phone},email=#{email},photo_register=#{photo_register} where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="findUserByUserName" parameterType="string" resultType="user">
+select * from user where username=#{username}
+
+  </select>
+</mapper>

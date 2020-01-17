@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>个人信息</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+    <link rel="stylesheet" href="../../static/css/me.css" th:href="@{/css/me.css}">
+</head>
+<body>
+<nav class="ui inverted segment m-padding-mini">
+    <div class="ui container">
+        <div class="ui grid">
+            <div class="eight wide column">
+                <div class="ui inverted basic  menu" >
+                    <a class="ui  item" style="color: orangered!important;">请登录</a>
+                    <a class="ui  item">免费注册</a>
+                    <a class="ui item"><i class="ui home icon"></i>订餐首页</a>
+                    <a class="ui item"><i class="ui idea icon"></i>商品分类</a>
+                </div>
+            </div>
+            <div class="  eight wide column">
+                <div class="ui inverted menu">
+                    <a class="ui item">
+                        个人中心
+                    </a>
+                    <a class="ui item"><i class="ui shopping cart icon"></i>购物车</a>
+                    <a class="ui item">联系客服</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</nav>
+<div class="ui container m-padding-massive">
+<div class="ui basic segment">
+    <div class="ui two column grid">
+        <div class="column">
+            <div class="text">
+                <img src="../../static/images/touxiang.png" class="ui rounded image" style="width: 30px"><span class="m-nickname-position" th:text="${user.nickname}"></span>
+            </div>
+        </div>
+        <div class="ui  column">
+            <a href="" class="m-right-margin">我的订单</a>
+            <a href="" th:href="@{/user/edit-info}">编辑资料</a>
+        </div>
+    </div>
+    <div class="ui basic segment m-padding-small ">
+        <form>
+            <input type="hidden" name="id" th:value="${user.id}">
+            <div class="ui vertical list" >
+
+                <div class="item ">
+                    <div class="ui grid">
+                        <div class="four wide column">
+                            <span class="m-font-style1">用户类型</span>
+                        </div>
+                        <div class="center aligned twelve wide column">
+                            <span class="m-font-size1">个体</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="item m-top-margin-large1">
+                    <div class="ui grid">
+                        <div class="four wide column">
+                            <span class="m-font-style1" >手机</span>
+                        </div>
+                        <div class="center aligned twelve wide column">
+                            <input type="hidden" name="phone" th:value="${user.phone}">
+                            <span class="m-font-size1" th:text="${user.phone}">18855324313</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="item m-top-margin-large1">
+                    <div class="ui grid">
+                        <div class="four wide column">
+                            <span class="m-font-style1">地址</span>
+                        </div>
+                        <div class="center aligned twelve wide column">
+                            <input type="hidden" name="address" th:value="${user.address}">
+                            <span class="m-font-size1"  th:text="${user.address}">安徽科技学院</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="item m-top-margin-large1">
+                    <div class="ui grid">
+                        <div class="four wide column">
+
+                            <span class="m-font-style1">昵称</span>
+                        </div>
+                        <div class="center aligned twelve wide column">
+
+                            <span class="m-font-size1"  th:text="${user.nickname}">丁金柱</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="item m-top-margin-large1">
+                    <div class="ui grid">
+                        <div class="four wide column">
+                            <span class="m-font-style1">邮箱</span>
+                        </div>
+                        <div class="center aligned twelve wide column">
+                            <input type="hidden" name="email" th:value="${user.email}">
+                            <span class="m-font-size1" th:text="${user.email}">1324009894@qq.com</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+    </div>
+
+</div>
+</div>
+<div class="left">
+    <ul>
+        <li>111</li>
+    </ul>
+</div>
+<footer class="ui inverted segment">
+    <div class="ui center aligned container m-padding-massive">
+        <div class="ui inverted divided grid">
+            <div class="two wide column">
+                <img src="../../static/images/weixin.png" class="ui rounded image img-style">
+            </div>
+            <div class="four wide column">
+                <div class="ui inverted list">
+                    <span class="item m-font-size letter-space">友情链接</span>
+                    <a href="" class="item letter-space"><span >饿了么</span></a>
+                    <a href="" class="item letter-space"><span >美团</span></a>
+                    <a href="" class="item letter-space"><span >百度</span></a>
+                </div>
+            </div>
+            <div class="four wide column">
+                <div class="ui inverted list">
+                    <span class="item m-font-size letter-space">服务商</span>
+                    <span class="item letter-space">安徽科技学院</span>
+                    <span class="item letter-space">王俊凯</span>
+                </div>
+            </div>
+            <div class="four wide column">
+                <div class="ui inverted list">
+                    <span class="item m-font-size letter-space">声明</span>
+                    <span class="item letter-space">用于学习练习</span>
+                    <span class="item letter-space">用于完成作业</span>
+                    <span class="item letter-space">用于应付毕业设计</span>
+                </div>
+            </div>
+            <div class="two wide column">
+                <img src="../../static/images/qq.jpg" class="ui rounded image img-style">
+            </div>
+
+        </div>
+        <br>
+        <div class="ui inverted selection divider">
+            <p class="m-top-margin-small letter-space" style="opacity: 0.8!important;">Copyright @2019-2020  Designed By wjk</p>
+        </div>
+    </div>
+</footer>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+<script src="../../static/js/jqueryscrollto/jquery.scrollTo.min.js"></script>
+</body>
+</html>

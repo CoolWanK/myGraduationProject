@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+    <link rel="stylesheet" href="../static/css/me.css">
+</head>
+<body>
+<nav class="ui inverted segment m-padding-mini" th:replace="_fragments::business-head">
+    <div class="ui container">
+        <div class="ui grid">
+            <div class="eight wide column">
+                <div class="ui inverted basic  menu" >
+                    <a class="ui  item" style="color: orangered!important;">请登录</a>
+                    <a class="ui  item">免费注册</a>
+                    <a class="ui item"><i class="ui home icon"></i>订餐首页</a>
+                    <a class="ui item"><i class="ui idea icon"></i>商品分类</a>
+                </div>
+            </div>
+            <div class="  eight wide column">
+                <div class="ui inverted menu">
+                    <a class="ui item">
+                        个人中心
+                    </a>
+                    <a class="ui item"><i class="ui shopping cart icon"></i>购物车</a>
+                    <a class="ui item">联系客服</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</nav>
+<div class="ui container">
+    <div class="ui segment">
+        <div class="ui segment">
+            <div class="ui two column grid">
+                <div class="column">
+                    <div class="ui horizontal link list">
+                        <a th:href="@{/business/moreinfo/1}" class="item">全部订单</a>
+                        <a th:href="@{/business/moreinfo/y/1}" class="item">已接订单</a>
+                        <a th:href="@{/business/moreinfo/n/1}" class="item active">未接订单</a>
+                    </div>
+                </div>
+                <div class="right aligned column">
+                    <a th:unless="${pageFirst}" th:href="@{/business/moreinfo/n/{pageNum}(pageNum=${pageNum}-1)}" class="ui basic teal button">上一页</a>
+                    <a th:unless="${pageLast}" th:href="@{/business/moreinfo/n/{pageNum}(pageNum=${pageNum}+1)}" class="ui basic teal button">下一页</a>
+                </div>
+            </div>
+
+        </div>
+        <div class="ui segment" th:unless="${#lists.isEmpty(pageInfo)}" th:each="orders:${pageInfo}">
+            <table class="ui celled table" >
+                <thead>
+                <tr><th></th>
+                    <th>姓名</th>
+                    <th>电话</th>
+                    <th>地址</th>
+                    <th>所订菜名</th>
+                    <th>样图</th>
+                    <th>价格</th>
+                    <th>下单时间</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="goods,goodsStatus:${orders.goodsList}">
+                    <th th:text="${goodsStatus.count}"></th>
+                    <th th:text="${orders.user.nickname}"></th>
+                    <th th:text="${orders.user.phone}"></th>
+                    <th th:text="${orders.user.address}"></th>
+                    <th th:text="${goods.name}"> </th>
+                    <th><img th:src="@{'/path/'+${goods.img}}" width="30px"></th>
+                    <td th:text="${goods.price}"></td>
+                    <th th:text="${orders.createTime}"></th>
+                </tr>
+                </tbody>
+                <tfoot>
+                <tr>
+                    <th colspan="8">
+                        <div class="ui two column grid">
+                            <div class="column"></div>
+                            <div class="right aligned column">
+                                <a th:if="${orders.business_time}==null" th:href="@{/business/order-edit/{id}(id=${orders.id})}" class="ui teal button">确认接单</a>
+                                <a th:if="${orders.business_time}!=null" class="ui teal basic button">已接单</a>
+                            </div>
+                        </div>
+                    </th>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+        <div class="ui segment" th:if="${#lists.isEmpty(pageInfo)}" style="height: 700px;text-align: center;align-items: center;display: flex" >
+            <div style="margin:  0 auto">
+                暂且没有相关记录
+            </div>
+        </div>
+
+    </div>
+
+    </div>
+</div>
+<footer class="ui inverted segment" th:replace="_fragments::footer">
+    <div class="ui center aligned container m-padding-massive">
+        <div class="ui inverted divided grid">
+            <div class="two wide column">
+                <img src="../static/images/weixin.png" class="ui rounded image img-style">
+            </div>
+            <div class="four wide column">
+                <div class="ui inverted list">
+                    <span class="item m-font-size letter-space">友情链接</span>
+                    <a href="" class="item letter-space"><span >饿了么</span></a>
+                    <a href="" class="item letter-space"><span >美团</span></a>
+                    <a href="" class="item letter-space"><span >百度</span></a>
+                </div>
+            </div>
+            <div class="four wide column">
+                <div class="ui inverted list">
+                    <span class="item m-font-size letter-space">服务商</span>
+                    <span class="item letter-space">安徽科技学院</span>
+                    <span class="item letter-space">王俊凯</span>
+                </div>
+            </div>
+            <div class="four wide column">
+                <div class="ui inverted list">
+                    <span class="item m-font-size letter-space">声明</span>
+                    <span class="item letter-space">用于学习练习</span>
+                    <span class="item letter-space">用于完成作业</span>
+                    <span class="item letter-space">用于应付毕业设计</span>
+                </div>
+            </div>
+            <div class="two wide column">
+                <img src="../static/images/qq.jpg" class="ui rounded image img-style">
+            </div>
+
+        </div>
+        <br>
+        <div class="ui inverted selection divider">
+            <p class="m-top-margin-small letter-space" style="opacity: 0.8!important;">Copyright @2019-2020  Designed By wjk</p>
+        </div>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+<script src="../static/js/jqueryscrollto/jquery.scrollTo.min.js"></script>
+<script>
+    $('.ui.dropdown').dropdown(
+        {
+            on:'click'
+        }
+    )
+    $("#file0").change(function(){
+        var file=this.files[0]
+        var img=/image\/\w+/;
+        if (!img.test(file.type)){
+            alert("请选择图片文件")
+        }
+        var objUrl = getObjectURL(this.files[0]) ;
+        
+        console.log("objUrl = "+objUrl) ;
+        if (objUrl)
+        {
+            $("#img0").attr("src", objUrl);
+            $("#img0").removeClass("hide");
+        }
+    }) ;
+    //建立一個可存取到該file的url
+    function getObjectURL(file)
+    {  
+        var url = null ;
+        if (window.createObjectURL!=undefined)
+        { // basic
+            url = window.createObjectURL(file) ;
+        }
+        else if (window.URL!=undefined)
+        {
+            // mozilla(firefox)
+            url = window.URL.createObjectURL(file) ;
+        }
+        else if (window.webkitURL!=undefined) {
+            // webkit or chrome
+            url = window.webkitURL.createObjectURL(file) ;
+        }
+        return url ;
+    }
+</script>
+</body>
+</html>

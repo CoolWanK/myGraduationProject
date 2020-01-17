@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>登录</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+    <link rel="stylesheet" href="../../static/css/me.css" th:href="@{/css/me.css}">
+</head>
+
+<body th:style="'background-image:url('+'/path/bg7.jpg'+');'+'  background-repeat:  no-repeat ;background-size:cover;background-attachment:fixed;background-color:#CCCCCC;'">
+
+</nav>
+<div class="ui container">
+    <div class="login-container m-left-margin-max m-top-margin-max">
+        <div class="ui middle aligned center aligned grid ">
+            <div class="column m-background-rgb">
+                <h2 class="ui teal image header">
+
+                    <div class="content">
+                        商户登录界面
+                    </div>
+                </h2>
+                <form class="ui large form" th:action="@{/business/login-finish}" method="post">
+                    <div class="ui stacked m-background-rgb segment ">
+                        <div class="field">
+                            <div class="ui left icon input">
+                                <i class="user icon"></i>
+                                <input type="text" class="m-background-rgb" name="username" placeholder="用户名...">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="ui left icon input">
+                                <i class="lock icon"></i>
+                                <input type="password" class="m-background-rgb" name="password" placeholder="密码..">
+                            </div>
+                        </div>
+
+                        <div class="ui fluid large teal submit button ">登录</div>
+                        <a th:href="@{/business/register}" class="ui fluid large button ">注册</a>
+
+                    </div>
+
+                    <div class="ui error message"></div>
+                    <div class="ui mini negative message" th:unless="${#strings.isEmpty(message)}" th:text="${message}"></div>
+                </form>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+<footer></footer>
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+<script>
+
+    $('.ui.form').form(
+        {
+            fields:{
+                username:{
+                    identifier:'username',
+                    rules:[
+                        {
+                            type:'empty',
+                            prompt:'请输入用户名'
+                        }
+                    ]
+                },
+                password:{
+                    identifier:'password',
+                    rules:[
+                        {
+                            type:'empty',
+                            prompt:'请输入密码'
+                        }
+                    ]
+                }
+
+            }
+        }
+    )
+    $('.m-background-rgb').mouseover(function () {
+        $(this).removeClass("m-background-rgb ")
+    })
+    $('.m-background-rgb').mouseout(function () {
+        $(this).addClass("m-background-rgb ")
+    })
+</script>
+
+</body>
+</html>

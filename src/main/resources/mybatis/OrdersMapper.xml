@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wjk.demo.mapper.OrdersMapper">
+  <insert id="insertOrders" parameterType="orders" useGeneratedKeys="true" keyProperty="id">
+    insert into orders (business_id,user_id,createTime,business_order) values(#{business_id},#{user_id},#{createTime},#{business_order})
+  </insert>
+  <insert id="insertorders_id" parameterType="java.util.ArrayList">
+    insert into orders_goods_id (orders_id,goods_id) values
+    <foreach collection="list" item="item" index="index" separator=",">
+    (#{item.orders_id},#{item.goods_id})
+  </foreach>
+  </insert>
+  <resultMap id="allOrders" type="orders">
+    <id column="oid" property="id"/>
+    <result column="ocreateTime" property="createTime"/>
+    <result column="obusiness_time" property="business_time"/>
+    <result column="ouser_time" property="user_time"/>
+    <association property="user" javaType="com.wjk.demo.pojo.User">
+      <id column="uid" property="id"/>
+      <result column="unickname" property="nickname"/>
+      <result column="uaddress" property="address"/>
+      <result column="uphone" property="phone"/>
+    </association>
+    <collection property="goodsList" ofType="com.wjk.demo.pojo.Goods">
+      <id column="gid" property="id"/>
+      <result property="name" column="gname"/>
+      <result property="img" column="gimg"/>
+      <result property="price" column="gprice"/>
+    </collection>
+  </resultMap>
+  <select id="findAllOrders" parameterType="Integer" resultMap="allOrders">
+    select o.id oid,o.createTime ocreateTime,o.user_id,o.business_id,o.business_time obusiness_time,o.user_time ouser_time,o_g.*,g.id gid,g.name gname,g.img gimg,g.price gprice,u.id uid,u.nickname unickname,u.address uaddress,u.phone uphone
+    from orders_goods_id o_g inner join orders o on o.id=o_g.orders_id inner join goods g on g.id=o_g.goods_id inner join business b on o.business_id=b.id
+    inner join user u on u.id=o.user_id where b.id=#{id} order by o.createTime desc
+  </select>
+  <resultMap id="allOrdersByUser" type="orders">
+    <id column="oid" property="id"/>
+    <result column="ocreateTime" property="createTime"/>
+    <result column="obusiness_time" property="business_time"/>
+    <result column="ouser_time" property="user_time"/>
+    <result column="obusiness_order" property="business_order"/>
+    <association property="business" javaType="com.wjk.demo.pojo.Business">
+      <id column="bid" property="id"/>
+      <result column="bnickname" property="nickname"/>
+    </association>
+    <collection property="goodsList" ofType="com.wjk.demo.pojo.Goods">
+      <id column="gid" property="id"/>
+      <result property="name" column="gname"/>
+      <result property="img" column="gimg"/>
+      <result property="price" column="gprice"/>
+    </collection>
+  </resultMap>
+  <select id="findAllOrdersByUserId" parameterType="Integer" resultMap="allOrdersByUser">
+    select o.id oid,o.createTime ocreateTime,o.user_id,o.business_id,o.user_time ouser_time,o.business_time obusiness_time,o.business_order obusiness_order,o_g.*,g.id gid,g.name gname,g.img gimg,g.price gprice,b.id bid,b.nickname bnickname
+    from orders_goods_id o_g inner join orders o on o.id=o_g.orders_id inner join goods g on g.id=o_g.goods_id inner join business b on o.business_id=b.id
+    inner join user u on u.id=o.user_id where u.id=#{id} order by o.createTime desc
+  </select>
+  <update id="updateOrders" parameterType="orders">
+    update orders
+    <trim prefix="set" suffixOverrides=",">
+      <if test="user_time!=null">user_time=#{user_time},</if>
+      <if test="business_time!=null">business_time=#{business_time},</if>
+      <if test="createTime!=null">createTime=#{createTime},</if>
+      <if test="user_id!=null">user_id=#{user_id},</if>
+      <if test="business_id">business_id=#{business_id},</if>
+      <if test="business_order">business_order=#{business_order},</if>
+    </trim>
+    where id=#{id}
+  </update>
+  <select id="findOrdersById" parameterType="Integer" resultType="orders">
+    select * from orders where id=#{id}
+  </select>
+  <resultMap id="allNoOrders" type="orders">
+    <id column="oid" property="id"/>
+    <result column="ocreateTime" property="createTime"/>
+    <result column="obusiness_time" property="business_time"/>
+    <result column="ouser_time" property="user_time"/>
+    <association property="user" javaType="com.wjk.demo.pojo.User">
+      <id column="uid" property="id"/>
+      <result column="unickname" property="nickname"/>
+      <result column="uaddress" property="address"/>
+      <result column="uphone" property="phone"/>
+    </association>
+    <collection property="goodsList" ofType="com.wjk.demo.pojo.Goods">
+      <id column="gid" property="id"/>
+      <result property="name" column="gname"/>
+      <result property="img" column="gimg"/>
+      <result property="price" column="gprice"/>
+    </collection>
+  </resultMap>
+  <select id="findAllYesOrders" parameterType="Integer" resultMap="allYesOrders">
+    select o.id oid,o.createTime ocreateTime,o.user_id,o.business_id,o.business_time obusiness_time,o.user_time ouser_time,o_g.*,g.id gid,g.name gname,g.img gimg,g.price gprice,u.id uid,u.nickname unickname,u.address uaddress,u.phone uphone
+    from orders_goods_id o_g inner join orders o on o.id=o_g.orders_id inner join goods g on g.id=o_g.goods_id inner join business b on o.business_id=b.id
+    inner join user u on u.id=o.user_id where b.id=#{id} and o.business_time is not null order by o.createTime desc
+  </select>
+  <resultMap id="allYesOrders" type="orders">
+    <id column="oid" property="id"/>
+    <result column="ocreateTime" property="createTime"/>
+    <result column="obusiness_time" property="business_time"/>
+    <result column="ouser_time" property="user_time"/>
+    <association property="user" javaType="com.wjk.demo.pojo.User">
+      <id column="uid" property="id"/>
+      <result column="unickname" property="nickname"/>
+      <result column="uaddress" property="address"/>
+      <result column="uphone" property="phone"/>
+    </association>
+    <collection property="goodsList" ofType="com.wjk.demo.pojo.Goods">
+      <id column="gid" property="id"/>
+      <result property="name" column="gname"/>
+      <result property="img" column="gimg"/>
+      <result property="price" column="gprice"/>
+    </collection>
+  </resultMap>
+  <select id="findAllNoOrders" parameterType="Integer" resultMap="allNoOrders">
+    select o.id oid,o.createTime ocreateTime,o.user_id,o.business_id,o.business_time obusiness_time,o.user_time ouser_time,o_g.*,g.id gid,g.name gname,g.img gimg,g.price gprice,u.id uid,u.nickname unickname,u.address uaddress,u.phone uphone
+    from orders_goods_id o_g inner join orders o on o.id=o_g.orders_id inner join goods g on g.id=o_g.goods_id inner join business b on o.business_id=b.id
+    inner join user u on u.id=o.user_id where b.id=#{id} and o.business_time is null order by o.createTime desc
+  </select>
+</mapper>

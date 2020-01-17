@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+    <link rel="stylesheet" href="../static/css/me.css" th:href="@{/css/me.css}">
+    <link rel="stylesheet" href="../static/css/animate.min1.css" th:href="@{/css/animate.min1.css}">
+</head>
+<body class="" th:style="'background-image:url('+'/path/bg7.jpg'+');'+'width: 100%;'" style="background-image: url(../static/images/2.jpg)">
+<div id="head"></div>
+<nav class="ui inverted segment m-padding-mini" th:replace="_fragments::head">
+    <div class="ui container">
+        <div class="ui grid">
+            <div class="eight wide column">
+                <div class="ui inverted basic  menu" >
+                    <a th:if="${session.user}==null" th:href="@{/user/login}" class="ui item" style="color: orangered!important;">请登</a>
+                    <a th:href="@{/user/register}"  class="ui  item">免费注册</a>
+                    <a class="ui item"><i class="ui home icon"></i>订餐首页</a>
+                    <a class="ui item"><i class="ui idea icon"></i>商品分类</a>
+                </div>
+            </div>
+            <div class="  eight wide column">
+                <div class="ui inverted menu">
+                    <a th:href="@{/user/info}" class="ui item">
+                       个人中心
+                    </a>
+                    <a class="ui item"><i class="ui shopping cart icon"></i>购物</a>
+                    <a class="ui item">联系客服</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</nav>
+<div class="ui container">
+
+        <div class="ui grid">
+            <div class="ten wide column">
+                <div class="ui basic segment">
+                    <div class="ui segment m-background-rgb1">
+                        <div class="ui two column grid m-background-rgb" >
+                            <div class="column">
+                                <label class="ui  black label" th:text="${type.name}">面类</label>
+                            </div>
+                            <div class="right aligned column">
+                                共<span class="m-font" style="font-size: 18px" th:text="${#lists.size(type.businessList)}">17</span>个
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ui basic segment" th:if="${#lists.size(type.businessList)}!=0">
+                        <div class="ui segment m-background-rgb1 ui animated rollln" style="margin-bottom: 3em" th:each="business:${type.businessList}">
+                            <div class="ui  basic  segment" style="text-align: center">
+                                <a th:href="@{/business/{id}(id=${business.id})}" class="m-left-right-margin"><label
+                                        class=" ui teal label m-font-label" th:text="${business.nickname}">阳光餐厅</label></a>
+                                <div class="ui center aligned" style="margin-top: 0.5em">
+                                    <span style="color: orangered">月销量:</span><span
+                                        th:text="${business.count}">123</span>
+                                    <i class="ui yen sign icon" style="color: orangered"></i><span
+                                        th:text="${business.startPrice}+'起送'">10起送</span>
+                                </div>
+                            </div>
+                            <div class="ui m-background-rgb animated1 segment">
+                                <img src="../static/images/1.jpeg" style="width: 580px!important;" th:src="@{'/path/'+${business.img}}"
+                                     class="ui rounded image"/>
+                            </div>
+
+                        </div>
+
+                </div>
+            </div>
+            <div class="six wide column" >
+                <div class="ui basic segment " >
+                    <div class="ui basic segment" style="height: 50px!important;margin-bottom: 3em">
+                        <form class="ui form" method="get" th:action="@{/search}" target="_blank">
+                            <div class="ui fluid right icon input"><input type="text" style="opacity: 0.6" id="search" name="search" placeholder="请输入关键词">
+                                <i class="ui search link icon"></i>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="ui segment m-background-rgb1" style="margin-bottom: 3em">
+                        <div class="m-black-touming">
+                            <span>热门搜索</span>
+                        </div>
+                        <div class="ui vertical list " id="tags">
+                            <a class="item "  th:each="tag:${tags}"><div class="ui segment m-background-rgb" style="height: 30px;padding-top: 5px!important;"><span th:text="${tag.name}" >123</span></div></a>
+                            <!--/*-->
+                            <a class="item" href="" th:each="tag:${tags}"><div class="ui segment" style="height: 30px;padding-top: 5px!important;"><span th:text="${tag.name}" >123</span></div></a>
+                            <a class="item" href="" th:each="tag:${tags}"><div class="ui segment" style="height: 30px;padding-top: 5px!important;"><span th:text="${tag.name}" >123</span></div></a>
+                            <a class="item" href="" th:each="tag:${tags}"><div class="ui segment" style="height: 30px;padding-top: 5px!important;"><span th:text="${tag.name}" >123</span></div></a>
+                            <a class="item" href="" th:each="tag:${tags}"><div class="ui segment" style="height: 30px;padding-top: 5px!important;"><span th:text="${tag.name}" >123</span></div></a>
+                            <!--*/-->
+                        </div>
+                    </div>
+                    <div class="ui segment m-background-rgb1" th:if="${session.user}==null">
+                        <div class="m-black-touming">
+                            <span>请登录</span>
+                        </div>
+                        <div>
+                            <div class="ui segment m-background-rgb1">
+                                <form th:action="@{/user/login-finish}" method="post">
+                                    <div>
+                                        <div class="ui  labeled input" style="height: 30px ;width: 315px;margin-bottom: 1em">
+                                            <label class="ui label" style="background-color: orangered"><i class="ui user icon"></i></label>
+                                            <input type="text" class="m-background-rgb" style="border-width: 1px" name="username"/>
+                                        </div>
+                                        <div class="ui  labeled input" style="height: 30px ;width: 315px">
+                                            <label class="ui label" style="background-color: orangered"><i class="ui lock icon"></i></label>
+                                            <input type="password" class="m-background-rgb" name="password"/>
+                                        </div>
+                                        <div style="margin-top: 2em">
+                                            <div class="ui two column grid">
+                                                <div class="column">
+                                                    <div class="fluid">
+                                                        <input type="submit" class="ui fluid black submit button" value="登录">
+                                                    </div>
+                                                </div>
+                                                <div class=" column">
+                                                    <div class="fluid">
+                                                        <a class="ui fluid  black  button" th:href="@{/user/register}">注册</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ui segment m-background-rgb1" th:if="${session.user}!=null">
+                        <div class="m-black-touming">
+                            <span>“欢迎”</span>
+                        </div>
+                        <div class="">
+                            <div class="ui segment m-background-rgb" style="height: 100px">
+                                <div class="m-img-position">
+                                    <div class="ui  grid">
+                                        <div class="three wide column">
+                                            <img src="../static/images/touxiang.png" th:src="@{/images/touxiang.png}" class="ui avatar image">
+                                        </div>
+                                        <div class="six wide column">
+                                            <span style="color: orangered;" th:text="${session.user.username}">1324009894</span>
+                                        </div>
+                                        <div class="seven wide column">
+                                            <a th:href="@{/user/delete-session}" class="ui  black mini button">退出登录</a>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div >
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ui segment m-background-rgb1" style="margin-bottom: 3em">
+                        <div class="m-black-touming">
+                            <span>最热美味</span>
+                        </div>
+                        <div class="ui vertical link list">
+                            <a class="item" href="" th:href="@{/business/{id}(id=${goods.business.id})}" th:each="goods:${goodsList}">
+                                <div class="ui segment m-background-rgb" style="height: 30px;padding-top: 5px!important;">
+                                    <div class="ui grid">
+                                        <div class="seven wide column">
+                                            <span style="color: orangered" th:text="${goods.name}">肉丝炒面</span>
+                                        </div>
+                                        <div class="five wide column">
+                                            销量：<span style="color: orangered" th:text="${goods.count}">10</span>
+                                        </div>
+                                        <div class="four wide column">
+                                            <i class="yen sign icon" ></i><span style=" color: orangered" th:text="${goods.price}">10</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                            <!--/*-->
+                            <a class="item" href="" >
+                                <div class="ui segment" style="height: 30px;padding-top: 5px!important;">
+                                    <div class="ui grid">
+                                        <div class="eight wide column">
+                                            <span style="color: orangered">肉丝炒面</span>
+                                        </div>
+                                        <div class="five wide column">
+                                            销量：<span style="color: orangered">10</span>
+                                        </div>
+                                        <div class="three wide column">
+                                            <i class="yen sign icon" ></i><span style=" color: orangered">10</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                            <a class="item" href="" >
+                                <div class="ui segment" style="height: 30px;padding-top: 5px!important;">
+                                    <div class="ui grid">
+                                        <div class="eight wide column">
+                                            <span style="color: orangered">肉丝炒面</span>
+                                        </div>
+                                        <div class="five wide column">
+                                            销量：<span style="color: orangered">10</span>
+                                        </div>
+                                        <div class="three wide column">
+                                            <i class="yen sign icon" ></i><span style=" color: orangered">10</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                            <a class="item" href="" >
+                                <div class="ui segment" style="height: 30px;padding-top: 5px!important;">
+                                    <div class="ui grid">
+                                        <div class="eight wide column">
+                                            <span style="color: orangered">肉丝炒面</span>
+                                        </div>
+                                        <div class="five wide column">
+                                            销量：<span style="color: orangered">10</span>
+                                        </div>
+                                        <div class="three wide column">
+                                            <i class="yen sign icon" ></i><span style=" color: orangered">10</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                            <a class="item" href="" >
+                                <div class="ui segment" style="height: 30px;padding-top: 5px!important;">
+                                    <div class="ui grid">
+                                        <div class="eight wide column">
+                                            <span style="color: orangered">肉丝炒面</span>
+                                        </div>
+                                        <div class="five wide column">
+                                            销量：<span style="color: orangered">10</span>
+                                        </div>
+                                        <div class="three wide column">
+                                            <i class="yen sign icon" ></i><span style=" color: orangered">10</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                            <a class="item" href="" >
+                                <div class="ui segment" style="height: 30px;padding-top: 5px!important;">
+                                    <div class="ui grid">
+                                        <div class="eight wide column">
+                                            <span style="color: orangered">肉丝炒面</span>
+                                        </div>
+                                        <div class="five wide column">
+                                            销量：<span style="color: orangered">10</span>
+                                        </div>
+                                        <div class="three wide column">
+                                            <i class="yen sign icon" ></i><span style=" color: orangered">10</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                            <!--*/-->
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<div id="foot"></div>
+<footer class="ui inverted segment" th:replace="_fragments::footer">
+    <div class="ui center aligned container m-padding-massive">
+        <div class="ui inverted divided grid">
+            <div class="two wide column">
+                <img src="../static/images/weixin.png" class="ui rounded image img-style">
+            </div>
+            <div class="four wide column">
+                <div class="ui inverted list">
+                    <span class="item m-font-size letter-space">友情链接</span>
+                    <a href="" class="item letter-space"><span >饿了�?/span></a>
+                    <a href="" class="item letter-space"><span >美团</span></a>
+                    <a href="" class="item letter-space"><span >百度</span></a>
+                </div>
+            </div>
+            <div class="four wide column">
+                <div class="ui inverted list">
+                    <span class="item m-font-size letter-space">商户中心</span>
+                    <a th:if="${session.business}==null" th:href="@{/business/register}" class="item letter-space">商户注册</a>
+                    <a th:if="${session.business}==null"  class="item letter-space">商户登录</a>
+                    <a th:href="@{/business/info}" class="item letter-space">商户中心</a>
+                </div>
+            </div>
+            <div class="four wide column">
+                <div class="ui inverted list">
+                    <span class="item m-font-size letter-space">声明</span>
+                    <span class="item letter-space">用于学习练习</span>
+                    <span class="item letter-space">用于完成作业</span>
+                    <span class="item letter-space">用于应付毕业设计</span>
+                </div>
+            </div>
+            <div class="two wide column">
+                <img src="../static/images/qq.jpg" class="ui rounded image img-style">
+            </div>
+
+        </div>
+        <br>
+        <div class="ui inverted selection divider">
+            <p class="m-top-margin-small letter-space" style="opacity: 0.8!important;">Copyright @2019-2020  Designed By wjk</p>
+        </div>
+    </div>
+</footer>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+<script src="../static/js/jqueryscrollto/jquery.scrollTo.min.js" th:src="@{/js/jqueryscrollto/jquery.scrollTo.min.js}"></script>
+<script>
+    $(document).ready(function(){
+        var nowimg=0;
+        var timer=null;
+        // 克隆第一张图片，并且放到最�?
+        $(".box-in li:first").clone().appendTo('.box-in')
+        // 右按钮业�?
+        $(".you").click(rightFunc)
+        function rightFunc(){
+
+            if(nowimg<2){
+                nowimg++
+                $(".box-in").animate({"left":nowimg*-740},1000)
+            }else{
+                nowimg=0
+                $(".box-in").animate({"left":2*-700},1000,function(){
+                    $(".box-in").css("left",0)
+
+                })
+            }
+            $(".circle span").eq(nowimg).addClass('current').siblings().removeClass('current')
+
+        }
+        // 左按钮业�?
+        $(".zuo").click(function(){
+            if(nowimg>0){
+                nowimg--
+                $(".box-in").animate({"left":nowimg*-765},1000)
+            }else{
+                nowimg=2
+                $(".box-in").css({"left":3*-765},1000)
+                $(".box-in").animate({"left":nowimg*-730},1000)
+            }
+            $(".circle span").eq(nowimg).addClass('current').siblings().removeClass('current')
+        })
+        // 小圆点业�?
+        $(".circle span").click(function(){
+            nowimg=$(this).index()
+            $(".circle span").eq(nowimg).addClass('current').siblings().removeClass('current')
+            $(".box-in").animate({"left":nowimg*-730}, 1000)
+        });
+
+        // 自动轮播
+       timer= setInterval(rightFunc,3000)
+
+    })
+    $('#click-up').click(function () {
+        $(window).scrollTo('#head',1000)
+    })
+    $('#click-down').click(function () {
+        $(window).scrollTo('#foot',1000)
+    })
+    $(function () {
+        $('#up-down').hide()
+        $('#buttons').hide();
+    })
+
+    $(window).scroll(function () {
+        if ($(window).scrollTop()>0){
+            $('#up-down').show()
+        }else {
+            $('#up-down').hide()
+        }
+        if ($(window).scrollTop()>600){
+            $('#buttons').show()
+        }else {
+
+            $('#buttons').hide()
+        }
+    })
+
+
+
+    $(function () {
+        $('#typeList').load("/typeList")
+        $('#type').popup(
+            {
+                popup:$('.popup'),
+                on:'click'
+            }
+
+        )
+    })
+    $('.search.link').click(function () {
+        var search=$('#search').val()
+        if(search==''){
+            alert("请输入搜索关键词")
+        }else {
+            $('.ui.form').submit()
+        }
+    })
+    $('.m-background-rgb').mouseover(function () {
+        $(this).removeClass("m-background-rgb ")
+    })
+    $('.m-background-rgb').mouseout(function () {
+        $(this).addClass("m-background-rgb ")
+    })
+    $('.animated1').mouseover(function () {
+        $(this).addClass("ui animated pulse")
+    })
+    $('.animated1').mouseout(function () {
+        $(this).removeClass("ui animated pulse")
+    })
+    $('#tags').on('click','a',function () {
+        var tagName= $(this).children().children().text()
+        var name=$('#search').val(tagName)
+        $('.ui.form').submit()
+    })
+</script>
+</body>
+</html>

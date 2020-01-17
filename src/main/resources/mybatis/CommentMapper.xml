@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wjk.demo.mapper.CommentMapper">
+  <insert id="saveComment" parameterType="comments">
+    insert  into comments (parentCommentId,content,commentTime,user_id,business_id,isBusiness) values
+    (#{parentCommentId,jdbcType=INTEGER},#{content},#{commentTime},#{user_id},#{business_id},#{isBusiness})
+  </insert>
+  <resultMap id="allComments" type="comments">
+    <id property="id" column="id"/>
+    <result property="commentTime" column="commentTime"/>
+    <result property="user_id" column="user_id"/>
+    <result property="business_id" column="business_id"/>
+    <result property="content" column="content"/>
+    <result property="isBusiness" column="isBusiness"/>
+    <collection property="replyCommentList" ofType="comments" column="id" select="findChildComments">
+
+    </collection>
+  </resultMap>
+  <select id="findAllComments" parameterType="integer" resultMap="allComments">
+    select * from comments where parentCommentId=-1 and business_id=#{business_id} order by commentTime desc
+  </select>
+  <select id="findChildComments" resultMap="allComments">
+        select * from comments where parentCommentId=#{id} order by commentTime asc
+  </select>
+
+  <select id="findFatherUserById" parameterType="Integer" resultType="user">
+       select u.* from user u  join (select c1.user_id id from comments c inner join comments c1 on c.parentCommentId=c1.id where c.id=#{id}) u1 on u.id=u1.id
+  </select>
+</mapper>

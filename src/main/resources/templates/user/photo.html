@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta  charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+    <link rel="stylesheet" href="../static/css/me.css" th:href="@{/css/me.css}">
+    <link rel="stylesheet" href="../static/css/animate.min1.css" th:href="@{/css/animate.min1.css}">
+    <link rel="stylesheet" href="../static/css/animated1.css" th:href="@{/css/animate1.css}">
+    <title>Title</title>
+
+</head>
+<body>
+<div class="ui container" style="text-align: center;align-items: center;display: flex">
+    <div  style="margin: 0 auto">
+        <video id="video" height="500" width="620" controls></video>
+        <!--<button id="btn">拍照</button>-->
+        <canvas id="canvas" height="330" width="400" style="display: none"></canvas>
+        <div class="mm-container"></div>
+        <form class="ui form" th:action="@{/user/renlian-login}" method="post">
+            <input id="mid" type="hidden" name="id"/>
+        </form>
+        <br>
+        <br>
+        <br>
+        <br>
+        <span class="span" style="color:black;font-size: 80px"></span>
+    </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+<script src="../static/js/jqueryscrollto/jquery.scrollTo.min.js" th:src="@{/js/jqueryscrollto/jquery.scrollTo.min.js}"></script>
+<script type="text/javascript">
+    window.onload = function(){
+           var video = document.getElementById("video")
+             var oBtn = document.getElementById("btn")
+            var canvas = document.getElementById("canvas")
+        var flag = getUserMedia({video:{height:330,width:400}}, success, error);
+        video.setAttribute("crossOrigin",'Anonymous')
+
+       var interval= setInterval(function(){
+            if(flag === true){    //getUserMedia返回false说明调用失败
+                canvas.getContext("2d").drawImage(video,0,0,200,200)
+                var url=canvas.toDataURL("image/jpeg")
+                console.log(url)
+                $.post("/user/photo-check",{
+                    "url":url
+                },function (data) {
+                    if (data=="-1"){
+                        $('.span').text("")
+                        $('.span').text("请将人脸对准镜头")
+                    }else if (data=="0"){
+                        $('.span').text("")
+                        $('.span').text("没有找到匹配的人脸请确认您的人脸已注册")
+                    }else {
+                        $("#mid").val(data)
+                        $('.ui.form').submit()
+                        flag=1
+                    }
+                })
+            }else{
+                console.log("获取摄像头失败，无法拍照！");
+            }
+
+        },2000)
+
+
+        function getUserMedia(constraints, success, error){
+            if(navigator.mediaDevices.getUserMedia){        //最新版API
+                navigator.mediaDevices.getUserMedia(constraints).then(success).catch(error);
+            }else if(navigator.getUserMedia){    //旧版API
+                navigator.getUserMedia(constraints, success, error);
+            }else if(navigator.mozGetUserMedia){  //Firefox API 
+                navigator.mozGetUserMedia(constraints, success, error);
+            }else if(navigator.webkitGetUserMedia){ //webkit内核浏览器 API
+                navigator.webkitGetUserMedia(constraints, success, error);
+            }else{
+                return false;
+            }
+            return true;
+        }
+        function success(stream){
+            video.srcObject = stream;
+            video.play();
+        }
+
+        function error(err){
+            console.log(err.message,err.name);
+        }
+    }
+
+</script>
+
+</body>
+</html>

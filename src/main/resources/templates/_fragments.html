@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+    <link rel="stylesheet" href="../static/css/me.css" th:href="@{/css/me.css}">
+</head>
+<body>
+<nav class="ui inverted segment m-padding-mini" th:fragment="head">
+    <div class="ui container">
+        <div class="ui grid">
+            <div class="seven wide column">
+                <div class="ui inverted basic  menu" >
+                    <a th:if="${session.user}==null" th:href="@{/user/login}" class="ui item" style="color: orangered!important;">请登录</a>
+                    <a th:href="@{/user/register}"  class="ui  item">免费注册</a>
+                    <a th:href="@{/}" class="ui item"><i class="ui home icon"></i>订餐首页</a>
+                    <a  id="type" class="ui item"><i class="ui idea icon"></i>商品分类</a>
+                    <div class="ui popup transition hidden">
+                        <div class="ui segment m-width-segment" >
+                            <div id="typeList">
+                                <div th:fragment="types">
+                                    <a th:href="@{/types/{id}(id=${type.id})}" href="" class="ui basic teal button " th:each="type:${types}" th:text="${type.name}" style="margin-bottom: 0.3em!important;" target="_blank">的空格</a>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="seven wide column">
+                <div class="ui inverted menu">
+                    <a th:href="@{/user/info}" class="ui item">
+                        个人中心
+                    </a>
+                    <a class="ui item">联系客服</a>
+                </div>
+            </div>
+            <div class="two wide column">
+                <div class="ui inverted menu">
+                    <a th:href="@{/business/info}" class="item">商户通道<i class="ui arrow right icon"></i></a>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</nav>
+<footer class="ui inverted segment" th:fragment="footer">
+    <div class="ui center aligned container m-padding-massive">
+        <div class="ui inverted divided grid">
+            <div class="two wide column">
+                <img src="../static/images/weixin.png" th:src="@{/images/weixin.png}" class="ui rounded image img-style">
+            </div>
+            <div class="four wide column">
+                <div class="ui inverted list">
+                    <span class="item m-font-size letter-space">友情链接</span>
+                    <a href="" class="item letter-space"><span >饿了么</span></a>
+                    <a href="" class="item letter-space"><span >美团</span></a>
+                    <a href="" class="item letter-space"><span >百度</span></a>
+                </div>
+            </div>
+            <div class="four wide column">
+                <div class="ui inverted list">
+                    <span class="item m-font-size letter-space">服务</span>
+                    <a href="http://www.ahstu.edu.cn/" class="item letter-space">安徽科技学院</a>
+                    <a  class="item letter-space">物联网工程</a>
+                    <a href="http://www.wjkblog.cn/about" class="item letter-space">王俊凯</a>
+                </div>
+            </div>
+            <div class="four wide column">
+                <div class="ui inverted list">
+                    <span class="item m-font-size letter-space">声明</span>
+                    <span class="item letter-space">用于学习练习</span>
+                    <span class="item letter-space">用于完成作业</span>
+                    <span class="item letter-space">用于应付毕业设计</span>
+                </div>
+            </div>
+            <div class="two wide column">
+                <img src="../static/images/qq.jpg" th:src="@{/images/qq.jpg}" class="ui rounded image img-style">
+            </div>
+
+        </div>
+        <br>
+        <div class="ui inverted selection divider">
+            <p class="m-top-margin-small letter-space" style="opacity: 0.8!important;">Copyright @2019-2020  Designed By wjk</p>
+        </div>
+    </div>
+</footer>
+<nav class="ui inverted segment m-padding-mini" th:fragment="business-head" >
+    <div class="ui container">
+        <div class="ui two column grid">
+            <div class="column">
+                <div class="ui inverted basic  menu" >
+                    <a th:href="@{/}" class="ui item" >首页</a>
+                    <a th:href="@{/business/info}" class="ui item">商户中心</a>
+                    <a class="ui item">联系客服</a>
+                    <a th:href="@{/business/reLogin}" class="item">注销</a>
+
+                </div>
+            </div>
+            <div class=" right aligned column">
+                <div class="ui inverted menu">
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</nav>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+<script src="../static/js/jqueryscrollto/jquery.scrollTo.min.js"></script>
+<script>
+    $(function () {
+        $('#typeList').load("/typeList")
+        $('#type').popup(
+            {
+                popup:$('.popup'),
+                on:'click'
+            }
+
+        )
+    })
+
+</script>
+</body>
+</html>

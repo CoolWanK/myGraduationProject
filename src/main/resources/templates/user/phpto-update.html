@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>个人信息</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+    <link rel="stylesheet" href="../static/css/me.css" th:href="@{/css/me.css}">
+</head>
+<body>
+<nav class="ui inverted segment m-padding-mini"  >
+    <div class="ui container">
+        <div class="ui two column grid">
+            <div class="column">
+                <div class="ui inverted basic  menu" >
+                    <a th:href="@{/}" class="ui item" >首页</a>
+                    <a th:href="@{/user/info}" class="ui item">个人中心</a>
+                    <a th:href="@{/user/delete-session}" class="item">注销</a>
+                </div>
+            </div>
+            <div class=" right aligned column">
+                <div class="ui inverted menu">
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</nav>
+<div class="ui container">
+
+</div>
+<footer class="ui inverted segment" th:replace="_fragments::footer">
+    <div class="ui center aligned container m-padding-massive">
+        <div class="ui inverted divided grid">
+            <div class="two wide column">
+                <img src="../static/images/weixin.png" class="ui rounded image img-style">
+            </div>
+            <div class="four wide column">
+                <div class="ui inverted list">
+                    <span class="item m-font-size letter-space">友情链接</span>
+                    <a href="" class="item letter-space"><span >饿了么</span></a>
+                    <a href="" class="item letter-space"><span >美团</span></a>
+                    <a href="" class="item letter-space"><span >百度</span></a>
+                </div>
+            </div>
+            <div class="four wide column">
+                <div class="ui inverted list">
+                    <span class="item m-font-size letter-space">服务商</span>
+                    <span class="item letter-space">安徽科技学院</span>
+                    <span class="item letter-space">王俊凯</span>
+                </div>
+            </div>
+            <div class="four wide column">
+                <div class="ui inverted list">
+                    <span class="item m-font-size letter-space">声明</span>
+                    <span class="item letter-space">用于学习练习</span>
+                    <span class="item letter-space">用于完成作业</span>
+                    <span class="item letter-space">用于应付毕业设计</span>
+                </div>
+            </div>
+            <div class="two wide column">
+                <img src="../static/images/qq.jpg" class="ui rounded image img-style">
+            </div>
+
+        </div>
+        <br>
+        <div class="ui inverted selection divider">
+            <p class="m-top-margin-small letter-space" style="opacity: 0.8!important;">Copyright @2019-2020  Designed By wjk</p>
+        </div>
+    </div>
+
+</footer>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+
+
+<script>
+
+    $ (function(){
+        var f;
+        $('#file').change(function () {
+            var file=this.files[0]
+            var img=/image\/\w+/;
+            if (!img.test(file.type)){
+                alert("请选择图片文件")
+            }
+            var url=getObjectURL(file);
+            $('#img').attr("src",url)
+            f=file;
+        })
+    })
+
+    function getObjectURL(file)
+    {
+        var url = null ;
+        if (window.createObjectURL!=undefined)
+        { // basic
+            url = window.createObjectURL(file) ;
+        }
+        else if (window.URL!=undefined)
+        {
+            // mozilla(firefox)
+            url = window.URL.createObjectURL(file) ;
+        }
+        else if (window.webkitURL!=undefined) {
+            // webkit or chrome
+            url = window.webkitURL.createObjectURL(file) ;
+        }
+        return url ;
+    }
+
+</script>
+</body>
+</html>

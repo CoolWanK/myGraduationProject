@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>个人信息</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+    <link rel="stylesheet" href="../static/css/me.css" th:href="@{/css/me.css}">
+</head>
+<body>
+<nav class="ui inverted segment m-padding-mini"  >
+    <div class="ui container">
+        <div class="ui two column grid">
+            <div class="column">
+                <div class="ui inverted basic  menu" >
+                    <a th:href="@{/}" class="ui item" >首页</a>
+                    <a th:href="@{/business/info}" class="ui item">商户中心</a>
+                    <a class="ui item">联系客服</a>
+                    <a th:href="@{/business/reLogin}" class="item">注销</a>
+                    <a  class="sale item" >上架商铺</a>
+                    <a class="not-sale item">下架商铺</a>
+                </div>
+            </div>
+            <div class=" right aligned column">
+                <div class="ui inverted menu">
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</nav>
+<div class="ui container">
+    <div class="ui grid">
+        <div class="two wide secondary column">
+            <div class="ui inverted segment" style="height: 750px!important; margin: 0!important;">
+                <div class="ui inverted vertical menu" style="width: auto!important;">
+                    <a class="item " data-id="1" >商家信息</a>
+                    <a class="item" data-id="2">菜色管理</a>
+                    <a class="item" data-id="3">订单管理</a>
+                </div>
+            </div>
+        </div>
+        <div class="fourteen wide column">
+            <div class="ui segment">
+                <div class="content">
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+    <input type="hidden" class="message" th:value="${message}!=null ?${message}"/>
+    <input type="hidden" class="pageNum" th:value="${pageNum}!=null ?${pageNum}"/>
+</div>
+<footer class="ui inverted segment" th:replace="_fragments::footer">
+    <div class="ui center aligned container m-padding-massive">
+        <div class="ui inverted divided grid">
+            <div class="two wide column">
+                <img src="../static/images/weixin.png" class="ui rounded image img-style">
+            </div>
+            <div class="four wide column">
+                <div class="ui inverted list">
+                    <span class="item m-font-size letter-space">友情链接</span>
+                    <a href="" class="item letter-space"><span >饿了么</span></a>
+                    <a href="" class="item letter-space"><span >美团</span></a>
+                    <a href="" class="item letter-space"><span >百度</span></a>
+                </div>
+            </div>
+            <div class="four wide column">
+                <div class="ui inverted list">
+                    <span class="item m-font-size letter-space">服务商</span>
+                    <span class="item letter-space">安徽科技学院</span>
+                    <span class="item letter-space">王俊凯</span>
+                </div>
+            </div>
+            <div class="four wide column">
+                <div class="ui inverted list">
+                    <span class="item m-font-size letter-space">声明</span>
+                    <span class="item letter-space">用于学习练习</span>
+                    <span class="item letter-space">用于完成作业</span>
+                    <span class="item letter-space">用于应付毕业设计</span>
+                </div>
+            </div>
+            <div class="two wide column">
+                <img src="../static/images/qq.jpg" class="ui rounded image img-style">
+            </div>
+
+        </div>
+        <br>
+        <div class="ui inverted selection divider">
+            <p class="m-top-margin-small letter-space" style="opacity: 0.8!important;">Copyright @2019-2020  Designed By wjk</p>
+        </div>
+    </div>
+
+</footer>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+
+
+<script>
+
+
+        $(function () {
+            var message= $('.message').val()
+            var pageNum=$('.pageNum').val()
+
+            $('.menu').on("click","a",function () {
+                var sid= $(this).data("id");
+                window.location.hash=sid
+                loadinner(sid)
+                $(this).addClass("active").siblings().removeClass("active")
+            })
+            function loadinner(sid) {
+                sid=window.location.hash
+                var path,i;
+                switch (sid) {
+                    case "#1":
+                        path="1";
+                        i=1;
+                        break;
+                    case "#2":
+                        path="2";
+                        i=2;
+                        break;
+                    case "#3":
+                        path="3";
+                        i=3;
+                        break;
+                    default:
+                        path="1";
+                        i=1;
+                        break;
+                }
+
+                    $('.content').load("/business/num",
+                        {
+                            "path":path
+                        }
+                    )
+            }
+
+            if (message&&pageNum){
+                $('.content').load("/business/num",
+                    {
+                        "path":message,
+                        "pageNum":pageNum
+
+                    }
+                )
+
+            }else if (message&&!pageNum){
+
+                $('.content').load("/business/num",
+                    {
+                        "path":message,
+                        "pageNum":"1"
+
+                    }
+                )
+            } else {
+
+                var sid=window.location.hash
+                loadinner(sid)
+            }
+
+        })
+
+
+
+$('.sale').click(function () {
+
+   $.post("/business/sale",function (result) {
+       alert(result)
+       
+   })
+   /* $('.sale').load("/business/sale",
+        function (responesTxt,statusTxt,xhr) {
+
+        alert(responesTxt)
+        })*/
+
+})
+$('.not-sale').click(function () {
+    $.post("/business/not-sale",function (data) {
+        alert(data)
+    })
+})
+
+</script>
+</body>
+</html>

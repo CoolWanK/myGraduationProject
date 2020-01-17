@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+    <link rel="stylesheet" href="../static/css/me.css" th:href="@{/css/me.css}">
+    <style>
+        .u-flyer{display: block;width: 50px;height: 50px;border-radius: 50px;z-index: 200;}
+    </style>
+</head>
+<body>
+<nav class="ui inverted segment m-padding-mini" th:replace="_fragments::business-head">
+    <div class="ui container">
+        <div class="ui grid">
+            <div class="eight wide column">
+                <div class="ui inverted basic  menu" >
+                    <a class="ui  item" style="color: orangered!important;">请登录</a>
+                    <a class="ui  item">免费注册</a>
+                    <a class="ui item"><i class="ui home icon"></i>订餐首页</a>
+                    <a class="ui item"><i class="ui idea icon"></i>商品分类</a>
+                </div>
+            </div>
+            <div class="  eight wide column">
+                <div class="ui inverted menu">
+                    <a class="ui item">
+                       个人中心
+                    </a>
+                    <a id="shopping" class="ui item"><i class="ui shopping cart icon"></i>购物车</a>
+                    <a class="ui item">联系客服</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</nav>
+<div class="ui container">
+
+        <div class="ui center aligned segment s-position">
+            <img src="../static/images/1.jpeg" style="width: 120px">
+            <br>
+            <h2 class="ui header">阳光餐厅</h2>
+        </div>
+
+    <div class="ui divider"></div>
+
+        <div class="ui grid">
+            <div class="four wide column">
+                <div class="ui segment m-left">
+                    <div class="left" id="left" >
+                        <ul v-for="item in items" class="container-ul">
+                            <li class="m-line-height-left" >{{item.name}}</li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+            <div class="eight wide column">
+
+                <div class="right" id="right">
+                    <ul class="container-ul">
+                        <li v-for="item in items">
+                            <div class="m-font-right">{{item.name}}</div>
+                            <div v-for="ite in item.list">
+                                <div class="ui segment">
+                                    <div class="ui grid">
+                                        <div class="four wide column">
+                                            <img src="../static/images/2.jpg" width="100px">
+                                        </div>
+                                        <div class="center aligned ten wide column">
+                                            <div class="m-info-font"><span>{{ite.name}}</span></div>
+                                            <div><i class="yen sign icon"></i><span>{{ite.price}}</span></div>
+                                        </div>
+                                        <div class="two center  bottom aligned wide column">
+                                            <i class="plus icon" style="width:50px"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="four wide column list1"  >
+                <div class="ui basic segment" style="position:fixed;">
+                    <ul style="list-style: none" >
+                        <li>
+                            <div class="ui segment" >
+                                <div class="ui grid">
+                                    <div class="five wide column">
+                                        <img src="../static/images/1.jpeg" width="30px">
+                                    </div>
+                                    <div class="center aligned eleven wide column">
+                                        <span style="color: red">炒面</span>
+                                        <i class="yen sign icon"></i><span>7</span>
+                                        <i class="close teal icon" style="margin-left: 10px"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="ui segment" >
+                                <div class="ui grid">
+                                    <div class="five wide column">
+                                        <img src="../static/images/1.jpeg" width="30px">
+                                    </div>
+                                    <div class="center aligned eleven wide column">
+                                        <span style="color: red">炒面</span>
+                                        <i class="yen sign icon"></i><span>7</span>
+                                        <i class="close teal icon" style="margin-left: 10px"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+
+                    </ul>
+                    <div >
+                        <h2>共计</h2><i class="yen sign icon"></i><span class="total" style="color: red">0元</span>&nbsp;&nbsp;<a href="">立即支付</a></div>
+                    </div>
+
+                </div>
+              
+
+            </div>
+        </div>
+
+ </div>
+<div class="m-shopping-position">
+    <a  class="m-shopping"style="position: fixed;margin-top: 60px;z-index: 2000">
+        <i onclick="dis()" id="shop" class="teal shopping huge cart icon"></i>
+        <span onclick="" class="count" style="z-index: 1;color: red; font-size: 20px;!important;">0</span>
+    </a>
+</div>
+
+
+
+
+<footer class="ui inverted segment">
+    <div class="ui center aligned container m-padding-massive">
+        <div class="ui inverted divided grid">
+            <div class="two wide column">
+                <img src="../static/images/weixin.png" class="ui rounded image img-style">
+            </div>
+            <div class="four wide column">
+                <div class="ui inverted list">
+                    <span class="item m-font-size letter-space">友情链接</span>
+                    <a href="" class="item letter-space"><span >饿了么</span></a>
+                    <a href="" class="item letter-space"><span >美团</span></a>
+                    <a href="" class="item letter-space"><span >百度</span></a>
+                </div>
+            </div>
+            <div class="four wide column">
+                <div class="ui inverted list">
+                    <span class="item m-font-size letter-space">服务商</span>
+                    <span class="item letter-space">安徽科技学院</span>
+                    <span class="item letter-space">王俊凯</span>
+                </div>
+            </div>
+            <div class="four wide column">
+                <div class="ui inverted list">
+                    <span class="item m-font-size letter-space">声明</span>
+                    <span class="item letter-space">用于学习练习</span>
+                    <span class="item letter-space">用于完成作业</span>
+                    <span class="item letter-space">用于应付毕业设计</span>
+                </div>
+            </div>
+            <div class="two wide column">
+                <img src="../static/images/qq.jpg" class="ui rounded image img-style">
+            </div>
+
+        </div>
+        <br>
+        <div class="ui inverted selection divider">
+            <p class="m-top-margin-small letter-space" style="opacity: 0.8!important;">Copyright @2019-2020  Designed By wjk</p>
+        </div>
+    </div>
+</footer>
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+<script src="../static/js/jqueryscrollto/jquery.scrollTo.min.js" th:src="@{/js/jqueryscrollto/jquery.scrollTo.min.js}"></script>
+<script src="../static/js/vue.js" th:src="@{/js/vue.js}"></script>
+<script src="../static/js/jquery.fly.min.js" th:src="@{/js/jquery.fly.min.js}"></script>
+
+
+<script>
+    var left=new Vue({
+        el:'#left',
+        data:{
+            items:[
+                {name:'面食1'},
+                {name:'面食2'},
+                {name:'面食3'},
+                {name:'面食4'},
+                {name:'面食5'},
+                {name:'面食6'},
+            ],
+
+        }
+    })
+    var right=new Vue({
+        el:'#right',
+        data:{
+            items:[
+                {name:left.items[0].name,list:[{name:'炒面1',price:'10元'},{name:'炒面1',price:'10元'},{name:'炒面1',price:'10元'}]},
+                {name:left.items[1].name,list:[{name:'炒面2',price:'10.0元'},{name:'炒面2',price:'10.0元'},{name:'炒面2',price:'10.0元'}]},
+                {name:left.items[2].name,list:[{name:'炒面3',price:'10.0元'},{name:'炒面3',price:'10.0元'},{name:'炒面3',price:'10.0元'}]},
+                {name:left.items[3].name,list:[{name:'炒面4',price:'10.0元'},{name:'炒面4',price:'10.0元'},{name:'炒面4',price:'10.0元'}]},
+                {name:left.items[4].name,list:[{name:'炒面5',price:'10.0元'},{name:'炒面5',price:'10.0元'},{name:'炒面5',price:'10.0元'}]},
+                {name:left.items[5].name,list:[{name:'炒面6',price:'10.0元'},{name:'炒面6',price:'10.0元'},{name:'炒面6',price:'10.0元'}]},
+            ]
+        }
+    })
+</script>
+<script>
+
+        $(window).scroll(function () {
+            if ($(window).scrollTop()>300){
+                $('.m-left').css('position','fixed');
+                $('.m-left').css('top',0)
+            } else {
+                $('.m-left').css('position','');
+            }
+        });
+
+        $('.left ul').on('click', 'li', function () {
+            $('.left ul li').removeClass('li-color')
+            $(this).addClass('li-color')
+            var i = $(this).index('.left ul li')
+            $('body,html').animate({scrollTop: $('.right ul li').eq(i).offset().top-40}, 1000)
+        })
+
+</script>
+<script>
+    $('.span1').click(function () {
+        $('.content').load('order-1.html')
+    })
+</script>
+<script>
+   $(function () {
+       var prices=0;
+       var count=0;
+       var offset=$('#shop').offset()
+       $(window).resize(site)
+       function site(){
+           offset=$('#shop').offset()
+       }
+       $('.right ul li ').on('click','i',function () {
+           var i = $(this)
+           var img = i.parent().parent().find('img').attr('src')
+           var flyer = $('<img class="u-flyer" src="' + img + '"/>')
+           flyer.fly({
+               start: {
+                   left: event.pageX,
+                   top: event.pageY
+               },
+               end: {
+                   left: offset.left,
+                   top: offset.top,
+                   width:0,
+                   height:0
+               },
+               onEnd:function () {
+
+               }
+           })
+           $('.count').html(++count)
+           var span=i.parent().parent().find('span')
+           var name=span.eq(0).text()
+           var price=parseInt(span.eq(1).text())
+           var li="<li>\n" +
+               "                            <div class=\"ui segment\" >\n" +
+               "                                <div class=\"ui grid\">\n" +
+               "                                    <div class=\"five wide column\">\n" +
+               "                                        <img src=\"../static/images/1.jpeg\" width=\"30px\">\n" +
+               "                                    </div>\n" +
+               "                                    <div class=\"center aligned eleven wide column\">\n" +
+               "                                        <span style=\"color: red\">"+name+"</span>\n" +
+               "                                        <i class=\"yen sign icon\"></i><span>"+price+"</span>\n" +
+               "                                        <i class=\"close teal icon\" style=\"margin-left: 10px\"></i>\n" +
+               "                                    </div>\n" +
+               "                                </div>\n" +
+               "                            </div>\n" +
+               "                        </li>"
+           $('.list1 ul').append(li)
+           prices=prices+price
+           $('.total').text(prices)
+       })
+
+       $('body').on('click','.close',function () {
+            count--;
+           $(this).parent().parent().parent().parent().empty()
+           var price=parseInt($(this).parent().find('span').eq(1).text())
+           prices=prices-price;
+           $('.total').text(prices)
+           $('.count').html(count)
+       })
+
+   })
+   //隐藏显示div
+$('.m-shopping').click(function () {
+
+    if ($('.list1').is(':hidden')){
+       $('.list1').show()
+    } else{
+        $('.list1').hide()
+    }
+})
+
+</script>
+</body>
+</html>

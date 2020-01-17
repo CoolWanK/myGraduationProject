@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>个人信息</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+    <link rel="stylesheet" href="../../static/css/me.css" th:href="@{/css/me.css}">
+</head>
+<body>
+<div class="ui container ">
+    <div class="ui basic segment">
+        <h2 class="ui header">信息管理</h2>
+    </div>
+
+    <form class="ui form" th:action="@{/user/edit-finish}" th:method="post">
+        <input type="hidden" name="id" th:value="${user.id}">
+        <input type="hidden" name="username" th:value="${user.username}">
+        <div class="ui basic segment m-top-margin-small-1 ">
+            <div class="ui right label input m-bottom-margin-huge">
+                <div class="ui label" style="width: 80px">昵称</div>
+                <input type="text" name="nickname" style="width: 400px" th:value="${user.nickname}">
+            </div>
+            <div class="ui right label input m-bottom-margin-huge">
+                <div class="ui label" style="width: 80px">手机</div>
+                <input type="text" name="phone" style="width: 400px" th:value="${user.phone}">
+            </div>
+            <div class="ui right label input m-bottom-margin-huge">
+                <div class="ui label" style="width: 80px">地址</div>
+                <input type="text" name="address" style="width: 400px" th:value="${user.address}">
+            </div>
+            <div class="ui right label input m-bottom-margin-huge">
+                <div class="ui label" style="width: 80px">邮箱</div>
+                <input type="text" name="email" style="width: 400px" th:value="${user.email}">
+            </div>
+             <br>
+            <input type="submit" class="ui teal button" value="保存"/>
+        </div>
+    </form>
+    <form class="f" method="post" th:action="@{/user/photo-renlian-check}" enctype="multipart/form-data">
+
+        <div class="ui grid">
+            <div class="five wide column">
+                <input type="file" multiple="multiple" id="file" name="file"/>
+            </div>
+            <div class="five wide column">
+                <img src="" id="img" width="100px"/>
+            </div>
+            <div class="five wide column">
+                <div th:if="${user.photo_register}==0">
+                    <input type="submit" value="注册"/>
+                </div>
+                <input type="hidden" name="update" id="update"/>
+                <a th:if="${user.photo_register}==1" class="ui teal button" id="btn" >更新照片信息</a>
+            </div>
+        </div>
+    </form>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+<script src="../../static/js/jqueryscrollto/jquery.scrollTo.min.js"></script>
+<script>
+    $ (function(){
+        $('#file').change(function () {
+            var file=this.files[0]
+            var img=/image\/\w+/;
+            if (!img.test(file.type)){
+                alert("请选择图片文件")
+            }
+            var url=getObjectURL(file);
+            $('#img').attr("src",url)
+
+        })
+    })
+
+    function getObjectURL(file)
+    {
+        var url = null ;
+        if (window.createObjectURL!=undefined)
+        { // basic
+            url = window.createObjectURL(file) ;
+        }
+        else if (window.URL!=undefined)
+        {
+            // mozilla(firefox)
+            url = window.URL.createObjectURL(file) ;
+        }
+        else if (window.webkitURL!=undefined) {
+            // webkit or chrome
+            url = window.webkitURL.createObjectURL(file) ;
+        }
+        return url ;
+    }
+$('#btn').click(function () {
+
+    var file=$('#file').val()
+    if(file==""){
+        alert("请先选择图片上传")
+    }else {
+        $('#update').val("1")
+        $('.f').submit()
+    }
+
+
+})
+</script>
+</body>
+</html>

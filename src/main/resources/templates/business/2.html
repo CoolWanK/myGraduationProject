@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+    <link rel="stylesheet" href="../static/css/me.css" th:href="@{/css/me.css}">
+</head>
+<body>
+<div class="ui container">
+    <div class="ui grid" th:fragment="2">
+        <div class="fifteen wide column">
+            <table class="ui celled table">
+                <thead>
+                <tr>
+                    <th></th>
+                    <th>菜名</th>
+                    <th>价格</th>
+                    <th>标签</th>
+                    <th>样图</th>
+                    <th>创建时间</th>
+                    <th colspan="2">操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <div th:if="${goodsList}!=null">
+                    <tr th:each="goods,goodsStat:${goodsList.list}">
+                        <td th:text="${goodsStat.count}">1</td>
+                        <td th:text="${goods.name}"></td>
+                        <td th:text="${goods.price}"></td>
+                        <td th:text="${goods.tag.name}"></td>
+                        <td><img src="fg" th:src="@{'/path/'+${goods.img}}" style="width: 5em !important;"> </td>
+                        <td th:text="${#dates.format(goods.createTime,'yyyy-MM-dd HH:mm:ss')}"></td>
+                        <td>
+                            <a th:href="@{/business/goods-edit/{id}(id=${goods.id})}"  href="" class="ui teal button edit">编辑</a>
+                            <a th:href="@{/business/goods-delete/{id}(id=${goods.id})}"  href="" class="ui teal button delete">删除</a>
+                        </td>
+                    </tr>
+                </div>
+                <!--/*-->
+                <tr>
+                    <td>1</td>
+                    <td>肉丝炒面</td>
+                    <td>7.00</td>
+                    <td>炒面</td>
+                    <td><img src="fg"> </td>
+                    <td>
+                        <a href="" class="ui teal button">编辑</a>
+                        <a href="" class="ui teal button">删除</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>肉丝炒面</td>
+                    <td>7.00</td>
+                    <td>炒面</td>
+                    <td><img src="fg"> </td>
+                    <td>
+                        <a href="" class="ui teal button">编辑</a>
+                        <a href="" class="ui teal button">删除</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>肉丝炒面</td>
+                    <td>7.00</td>
+                    <td>炒面</td>
+                    <td><img src="fg"> </td>
+                    <td>
+                        <a href="" class="ui teal button">编辑</a>
+                        <a href="" class="ui teal button">删除</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>肉丝炒面</td>
+                    <td>7.00</td>
+                    <td>炒面</td>
+                    <td><img src="fg"> </td>
+                    <td>
+                        <a href="" class="ui teal button">编辑</a>
+                        <a href="" class="ui teal button">删除</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>肉丝炒面</td>
+                    <td>7.00</td>
+                    <td>炒面</td>
+                    <td><img src="fg"> </td>
+                    <td>
+                        <a href="" class="ui teal button">编辑</a>
+                        <a href="" class="ui teal button">删除</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>肉丝炒面</td>
+                    <td>7.00</td>
+                    <td>炒面</td>
+                    <td><img src="fg"> </td>
+                    <td>
+                        <a href="" class="ui teal button">编辑</a>
+                        <a href="" class="ui teal button">删除</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>肉丝炒面</td>
+                    <td>7.00</td>
+                    <td>炒面</td>
+                    <td><img src="fg"> </td>
+                    <td>
+                        <a href="" class="ui teal button">编辑</a>
+                        <a href="" class="ui teal button">删除</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>肉丝炒面</td>
+                    <td>7.00</td>
+                    <td>炒面</td>
+                    <td><img src="fg"> </td>
+                    <td>
+                        <a href="" class="ui teal button">编辑</a>
+                        <a href="" class="ui teal button">删除</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>肉丝炒面</td>
+                    <td>7.00</td>
+                    <td>炒面</td>
+                    <td><img src="fg"> </td>
+                    <td>
+                        <a href="" class="ui teal button">编辑</a>
+                        <a href="" class="ui teal button">删除</a>
+                    </td>
+                </tr>
+                <!--*/-->
+                </tbody>
+                <tfoot>
+                <tr>
+                    <th colspan="7">
+                        <div class="ui two column grid">
+                            <div class="ui column">
+                                <a th:if="${pageFirst}!=null" th:unless="${pageFirst==true}" th:href="@{/business/listPage/{pageNum}(pageNum=${pageNum}-1)}" href="#" class="ui basic teal button">上一页</a>
+                                <a th:if="${pageLast}!=null" th:unless="${pageLast==true}" th:href="@{/business/listPage/{pageNum}(pageNum=${pageNum}+1)}" href="#" class="ui basic teal  button">下一页</a>
+                            </div>
+                            <div class="ui right aligned column">
+                                <a th:href="@{/business/goods-input}" href="menu-input.html"  class="ui teal button xinzeng ">新增</a>
+                            </div>
+                        </div>
+
+                    </th>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+<script src="../static/js/jqueryscrollto/jquery.scrollTo.min.js"></script>
+<script>
+    $('.ui.dropdown').dropdown(
+        {
+            on:'click'
+        }
+    )
+    $("#file0").change(function(){
+        var file=this.files[0]
+        var img=/image\/\w+/;
+        if (!img.test(file.type)){
+            alert("请选择图片文件")
+        }
+        var objUrl = getObjectURL(this.files[0]) ;
+        
+        console.log("objUrl = "+objUrl) ;
+        if (objUrl)
+        {
+            $("#img0").attr("src", objUrl);
+            $("#img0").removeClass("hide");
+        }
+    }) ;
+    //建立一個可存取到該file的url
+    function getObjectURL(file)
+    {  
+        var url = null ;
+        if (window.createObjectURL!=undefined)
+        { // basic
+            url = window.createObjectURL(file) ;
+        }
+        else if (window.URL!=undefined)
+        {
+            // mozilla(firefox)
+            url = window.URL.createObjectURL(file) ;
+        }
+        else if (window.webkitURL!=undefined) {
+            // webkit or chrome
+            url = window.webkitURL.createObjectURL(file) ;
+        }
+        return url ;
+    }
+    $('.xinzeng').click(function() {
+        var i=0;
+        $.ajaxSetup (
+            {
+                async: false
+            });
+        $.post("/business/isFlag",function (data) {
+            if (data=="1"){
+                alert("请先下架再修改商品")
+                i=1;
+            }else {
+                i=0;
+            }
+        })
+       if (i==1){
+           alert("1111")
+           return false
+       }else {
+           return true
+       }
+
+    })
+    $('.delete').click(function() {
+        var i=0;
+        $.ajaxSetup (
+            {
+                async: false
+            });
+        $.post("/business/isFlag",function (data) {
+            if (data=="1"){
+                alert("请先下架再修改商品")
+                i=1;
+            }else {
+                i=0;
+            }
+        })
+        if (i==1){
+            alert("1111")
+            return false
+        }else {
+            return true
+        }
+
+    })
+    $('.edit').click(function() {
+        var i=0;
+        $.ajaxSetup (
+            {
+                async: false
+            });
+        $.post("/business/isFlag",function (data) {
+            if (data=="1"){
+                alert("请先下架再修改商品")
+                i=1;
+            }else {
+                i=0;
+            }
+        })
+        if (i==1){
+
+            return false
+        }else {
+            return true
+        }
+
+    })
+</script>
+</body>
+</html>

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+    <link rel="stylesheet" href="../../static/css/me.css" th:href="@{/css/me.css}">
+</head>
+<body>
+<div class="ui container">
+    <div class="ui segment" th:unless="${#lists.isEmpty(pageInfo)}" th:each="order:${pageInfo}">
+        <table class="ui table">
+            <thead>
+            <tr>
+                <th></th>
+                <th>商家</th>
+                <th>商品</th>
+                <th>样图</th>
+                <th>价格</th>
+                <th>下单时间</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="goods,goodsStatus:${order.goodsList}">
+                <td th:text="${goodsStatus.count}"></td>
+                <td><a th:href="@{/business/{id}(id=${order.business.id})}" th:text="${order.business.nickname}"></a></td>
+                <td th:text="${goods.name}">王俊凯</td>
+                <td ><img th:src="'/path/'+${goods.img}" width="40px"></td>
+                <td th:text="${goods.price}"></td>
+                <td th:text="${#dates.format(order.createTime,'yyyy-MM-dd HH:mm:ss')}">2019-11-06</td>
+            </tr>
+            </tbody>
+            <tfoot>
+            <tr>
+                <th colspan="6">
+                    <div class="right aligned column">
+                        <div class="right aligned column">
+                            <div th:if="${order.business_order}!=1"> <a  th:href="@{/user/order-songDa/{id}(id=${order.id})}" class="ui teal button">确认送达</a>
+                                <a th:if="${order.business_time}!=null" class="ui teal button" >店家已接单</a>
+                                <a th:if="${order.business_time}==null" class="ui teal button" >店家尚未接单</a></div>
+                            <div th:if="${order.business_order}==1">
+                                <a class="ui teal basic button">订单已完成</a><span th:if="${order.user_time}!=null" class="ui basic black label" th:text="${#dates.format(order.user_time,'yyyy-MM-dd HH:mm:ss')}">2019-12-13</span>
+                                <a id="comment" class="ui teal button" onclick="comment(this)">评论<input type="hidden" value="1" th:value="${order.business.id}"></a>
+                            </div>
+
+                        </div>
+                    </div>
+                </th>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+    <div class="ui basic segment">
+        <div class="ui two column grid">
+            <div class="column"></div>
+            <div class="right aligned column">
+                <a th:href="@{/user/user-orders/1}" class="ui teal button">查看全部</a>
+            </div>
+        </div>
+    </div>
+
+    <div id="comment-toggle" class="comment-toggle-position ui segment" style="z-index: 100!important; width: 900px">
+        <div class="ui two column grid">
+            <div class="column"></div>
+            <div class="right aligned column">
+                <div id="close" class="">关闭</div>
+            </div>
+        </div>
+        <form class="comment-form" th:action="@{/comments-user}" method="post">
+            <textarea name="content" placeholder="说出您的感想..." style="width: 800px;height: 350px"></textarea>
+            <input type="hidden" name="parentCommentId" value="-1">
+            <input type="hidden" name="business_id">
+            <div class="ui two column grid">
+                <div class="column"></div>
+                <div class="right aligned column">
+                    <div id="comment-fabu" class="ui teal submit button">发表</div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+<script src="../../static/js/jqueryscrollto/jquery.scrollTo.min.js"></script>
+<script>
+    $('#comment-toggle').hide()
+    $("#close").click(function () {
+        $('#comment-toggle').hide()
+    })
+    function comment(obj){
+       var busines_id= $(obj).children().val()
+        $("[name='business_id']").val(busines_id)
+        $('#comment-toggle').toggle()
+    }
+
+
+    $("#comment-fabu").click(function () {
+       var content= $("[name='content']").val()
+    if(content==""){
+        alert("请输入类容")
+    }else{
+        $('.comment-form').submit()
+        $('#comment-toggle').hide()
+
+    }
+    })
+</script></div>
+</body>
+
+</html>

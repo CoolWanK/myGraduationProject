@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.2.4/dist/semantic.min.css">
+    <link rel="stylesheet" href="../../static/css/me.css" th:href="@{/css/me.css}">
+</head>
+<body>
+
+<div class="ui basic segment" >
+    <label class="ui fluid  label m-text" style="height: 150px !important;">欢迎商户注册</label>
+</div>
+<div class="ui container m-top-margin-register">
+    <form class="ui register form" th:action="@{/business/register-finish}" method="post">
+        <div class="ui column">
+            <div class="ui compact segment">
+                <div class="ui ">
+                    <div class="ui label input m-bottom-margin-large">
+                        <span  class="ui label" style="width: 80px!important;">用户名:</span>
+                        <input type="text" class="username" name="username" style="width: 400px!important;">
+                        <label id="label1" class="ui label" style="color: orangered"></label>
+                    </div>
+                </div>
+
+                <div class="ui ">
+                    <div class="ui label input m-bottom-margin-large">
+                        <span  class="ui label" style="width: 80px!important;">密码:</span>
+                        <input type="password" name="password" style="width: 400px!important;">
+
+                    </div>
+                </div>
+                <div class="ui ">
+                    <div class="ui label input m-bottom-margin-large">
+                        <span  class="ui label" style="width: 80px!important;">确认密码:</span>
+                        <input type="password" name="repassword" style="width: 400px!important;">
+
+                    </div>
+                </div>
+                <div class="ui ">
+                    <div class="ui label input m-bottom-margin-large">
+                        <span  class="ui label" style="width: 80px!important;">店铺名:</span>
+                        <input type="text" class="nickname" name="nickname" placeholder="" style="width: 400px!important;">
+                        <label id="label2" class="ui label" style="color: orangered"></label>
+                    </div>
+                </div>
+                <div class="ui ">
+                    <div class="ui label input m-bottom-margin-large">
+                        <span  class="ui label" style="width: 80px!important;">手机:</span>
+                        <input type="text" name="phone" style="width: 400px!important;">
+                    </div>
+                </div>
+                <div class="ui ">
+                    <div class="ui label input m-bottom-margin-large">
+                        <span  class="ui label" style="width: 80px!important;">地址:</span>
+                        <input type="text" name="address" style="width: 400px!important;">
+                    </div>
+                </div>
+                <div class=" ">
+
+                </div>
+                <div class="ui teal submit button">注册</div>
+
+            </div>
+            <div class="ui error message"></div>
+        </div>
+
+    </form>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.2.4/dist/semantic.min.js"></script>
+<script>
+    $('.register.form').form(
+        {
+            fields:{
+                username:{
+                    identifier:'username',
+                    rules:[
+                        {
+                            type:'empty',
+                            prompt:'用户名不能为空'
+                        }
+                    ]
+                },
+                password:{
+                    identifier:'password',
+                    rules:[
+                        {
+                            type:'empty',
+                            prompt:'密码不能为空'
+                        }
+                    ]
+                },
+                repassword:{
+                    identifier:'repassword',
+                    rules:[
+                        {
+                            type:'empty',
+                            prompt:'确认密码不能为空'
+                        }
+                    ]
+                },
+                address:{
+                    identifier:'address',
+                    rules:[
+                        {
+                            type:'empty',
+                            prompt:'地址不能为空'
+                        }
+                    ]
+                },
+                nickname:{
+                    identified:'nickname',
+                    rules:[
+                        {
+                            type:'empty',
+                            prompt:'昵称不能为空'
+                        }
+                    ]
+                },
+                phone:{
+                    identified:'phone',
+                    rules:[
+                        {
+                            type:'empty',
+                            prompt:'手机不能为空'
+                        }
+                    ]
+                }
+
+
+            }
+        }
+    )
+    //ajax验证重复
+    $('.submit.button').click(function () {
+        if ($("[name='password']").val()!=$("[name='repassword']").val()) {
+            alert("俩次输入的密码不一样")
+        }
+    })
+    $('.username').blur(function () {
+
+        var username=$('.username').val()
+
+        $('.username').load("/business/yanzheng1",
+            {
+                "username":username
+            },function (responseTxt,statusTxt,xhr) {
+                $('#label1').html(responseTxt)
+                if (responseTxt.toString()=="已存在该用户名"){
+                    $('.username').focus()
+                }
+
+            }
+        )
+    })
+    $('.nickname').blur(function () {
+
+        var nickname=$('.nickname').val()
+
+        $('.username').load("/business/yanzheng2",
+            {
+                "nickname":nickname
+            },function (responseTxt,statusTxt,xhr) {
+                $('#label2').html(responseTxt)
+                if (responseTxt.toString()=="已存在该店铺名"){
+                    $('.nickname').focus()
+                }
+
+            }
+        )
+    })
+
+</script>
+</body>
+</html>

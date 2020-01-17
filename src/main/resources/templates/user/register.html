@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+    <link rel="stylesheet" href="../../static/css/me.css" th:href="@{/css/me.css}">
+</head>
+<body>
+<div class="ui basic segment" >
+    <label class="ui fluid black label m-text" style="height: 150px !important;">欢迎注册</label>
+</div>
+<div class="ui container m-top-margin-register">
+        <form class="ui register form"  th:action="@{/user/register-finish}" method="post">
+            <div class="ui column">
+                <div class="ui  segment" style="width: 600px">
+                    <div class="ui field">
+                        <div class="ui label input m-bottom-margin-large">
+                            <span  class="ui  label" style="width: 80px!important;">用户名:</span>
+                            <input type="text" name="username" style="width: 400px!important;">
+                            <label class="ui red label">必填</label>
+                        </div>
+                    </div>
+                    <div class="ui field">
+                        <div class="ui label input m-bottom-margin-large">
+                            <span  class="ui label" style="width: 80px!important;">昵称:</span>
+                            <input type="text" name="nickname" style="width: 400px!important;">
+                            <label class="ui red label">必填</label>
+                        </div>
+                    </div>
+                    <div class="ui field">
+                        <div class="ui label input m-bottom-margin-large">
+                            <span  class="ui label" style="width: 80px!important;">密码:</span>
+                            <input type="password" name="password" style="width: 400px!important;">
+                            <label class="ui red label">必填</label>
+                        </div>
+                    </div>
+                    <div class="ui field">
+                        <div class="ui label input m-bottom-margin-large">
+                            <span  class="ui label" style="width: 80px!important;">确认密码:</span>
+                            <input type="password" name="repassword" style="width: 400px!important;">
+                            <label class="ui red label">必填</label>
+                        </div>
+                    </div>
+                    <div class="ui field">
+                        <div class="ui label input m-bottom-margin-large">
+                            <span  class="ui label" style="width: 80px!important;">手机:</span>
+                            <input type="text" name="phone" style="width: 400px!important;">
+                        </div>
+                    </div>
+                    <div class="ui field">
+                        <div class="ui label input m-bottom-margin-large">
+                            <span  class="ui label" style="width: 80px!important;">地址:</span>
+                            <input type="text" name="address" style="width: 400px!important;">
+                        </div>
+                    </div>
+                    <div class="ui teal submit button">注册</div>
+
+                </div>
+                <div class="ui error message"></div>
+            </div>
+
+        </form>
+
+
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+<script>
+    $('.register.form').form(
+        {
+            fields:{
+                username:{
+                    identifier:'username',
+                    rules:[
+                        {
+                            type:'empty',
+                            prompt:'用户名不能为空'
+                        }
+                    ]
+                },
+                password:{
+                    identifier:'password',
+                    rules:[
+                        {
+                            type:'empty',
+                            prompt:'密码不能为空'
+                        }
+                    ]
+                },
+                repassword:{
+                    identifier:'repassword',
+                    rules:[
+                        {
+                            type:'empty',
+                            prompt:'确认密码不能为空'
+                        }
+                    ]
+                }
+
+            }
+        }
+    )
+    $('.submit.button').click(function () {
+       if ($("[name='password']").val()!=$("[name='repassword']").val()) {
+           alert("俩次输入的密码不一样")
+       }
+    })
+
+</script>
+</body>
+</html>

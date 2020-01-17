@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+    <link rel="stylesheet" href="../static/css/me.css" th:href="@{/css/me.css}">
+    <link rel="stylesheet" href="../static/css/animate.min1.css" th:href="@{/css/animate.min1.css}">
+    <style>
+        .u-flyer{display: block;width: 50px;height: 50px;border-radius: 50px;z-index: 200;}
+    </style>
+</head>
+<body th:style="'background-image:url('+'/path/bg3.jpg'+');'+'  background-repeat:  no-repeat ;background-size:cover;background-attachment:fixed;background-color:#CCCCCC;'">
+<nav class="ui inverted segment m-padding-mini"　th:replace="_fragments::head">
+    <div class="ui container">
+        <div class="ui grid">
+            <div class="eight wide column">
+                <div class="ui inverted basic  menu" >
+                    <a class="ui  item" style="color: orangered!important;">请登录</a>
+                    <a class="ui  item">免费注册</a>
+                    <a class="ui item"><i class="ui home icon"></i>订餐首页</a>
+                    <a class="ui item"><i class="ui idea icon"></i>商品分类</a>
+                </div>
+            </div>
+            <div class="  eight wide column">
+                <div class="ui inverted menu">
+                    <a class="ui item">
+                       个人中心
+                    </a>
+                    <a id="shopping" class="ui item"><i class="ui shopping cart icon"></i>购物车</a>
+                    <a class="ui item">联系客服</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</nav>
+<div class="ui container">
+    <input type="hidden" class="business_id" th:value="${business.id}">
+        <div class="ui center aligned segment s-position m-background-rgb1">
+
+            <img src="../static/images/1.jpeg" th:src="@{'/path/'+${business.img}}" style="width: 120px">
+            <br>
+            <h2 class="ui header" th:text="${business.nickname}">阳光餐厅</h2><span th:text="'('+${business.address}+')'" style="color: orangered"></span>
+        </div>
+
+    <div id="business-info">
+        <div class="m-shopping-position">
+            <a  class="m-shopping"style="position: fixed;margin-top: 60px;z-index: 2000">
+                <i onclick="dis()" id="shop" class="teal shopping huge cart icon"></i>
+                <span onclick="" class="count" style="z-index: 1;color: red; font-size: 20px;!important;">0</span>
+            </a>
+        </div>
+        <div class="ui grid">
+            <div class="four wide column">
+                <div class="ui segment m-left m-background-rgb1">
+                    <div class="left" id="left" >
+                        <ul  class="container-ul">
+                            <li class="m-line-height-left" th:each="tag:${tags}" th:text="${tag.name}">{{item.name}}</li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+            <div class="eight wide column">
+
+                <div class="right m-background-rgb" id="right">
+                    <ul class="container-ul">
+                        <input type="hidden" name="startPrice" class="startPrice" th:value="${business.startPrice}">
+                        <li  th:each="tag:${tags}">
+                            <div class="m-font-right" th:text="${tag.name}"></div>
+                            <div v-for="ite in item.list" class="ui animated bounceInDown" th:each="goods:${tag.goodsList}">
+                                <div class="ui segment m-background-rgb">
+                                    <div class="ui grid">
+                                        <div class="four wide column">
+                                            <img src="../static/images/2.jpg" th:src="@{'/path/'+${goods.img}}" width="100px">
+                                        </div>
+                                        <div class="center aligned ten wide column">
+                                            <div class="m-info-font" ><span th:text="${goods.name}">{{ite.name}}</span></div>
+                                            <div><i class="yen sign icon"></i><span th:text="${goods.price}">{{ite.price}}</span></div>
+                                            <div>销量:<span th:text="${goods.count}">{{ite.price}}</span></div>
+
+                                        </div>
+                                        <div class="two center  bottom aligned wide column">
+                                            <i class="plus icon" style="width:50px"><input type="hidden" name="goodsId" th:value="${goods.id}"/></i>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+
+
+                    </ul>
+                </div>
+            </div>
+            <form class="ui form" th:action="@{/pay}" method="post">
+                <input type="hidden" name="businessId" th:value="${business.id}">
+                <div class="four wide column list1"  >
+                    <div class="ui basic segment" style="position:fixed;">
+                        <ul style="list-style: none" >
+                            <!-- <li>
+                                 <div class="ui segment" >
+                                     <input type="hidden" name="goodsList[0].name" value="123">
+                                     <input type="hidden" name="goodsList[0].price" value="1">
+                                     <input type="hidden" name="goodsList[0].id" value="12">
+                                     <div class="ui grid">
+                                         <div class="five wide column">
+                                             <img src="../static/images/1.jpeg" width="30px">
+                                             <input type="hidden" name="goodsList[0].img" value="+img+">
+                                         </div>
+                                         <div class="center aligned eleven wide column">
+                                             <span style="color: red">炒面</span>
+                                             <i class="yen sign icon"></i><span>7</span>
+                                             <i class="close teal icon" style="margin-left: 10px"></i>
+                                         </div>
+                                     </div>
+                                 </div>
+                             </li>-->
+
+
+                        </ul>
+                        <div >
+                            <h2 class="ui header">共计</h2><span style="color: #d21414" th:text="'(起送价:'+${business.startPrice}+'元)'"></span><br>
+                            <i class="yen sign icon"></i><span class="total" style="color: #d21414">0</span>元<a class="pay" >立即支付</a></div>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="ui dividing "></div>
+
+    <div class="ui grid">
+        <div class="four wide column"></div>
+        <div class="ten wide column">
+
+            <a id="comment"  class="ui dividing header">查看评论</a>
+            <br>
+            <br>
+            <br>
+            <br>
+            <div id="content">
+                <div id="comment-content">
+                    <div  class="ui minimal comments" th:fragment="commentList">
+                        <!--/*-->
+                        <div class="comment">
+                            <a class="avatar">
+                                <img src="/images/avatar/small/matt.jpg">
+                            </a>
+                            <div class="content">
+                                <a class="author">Matt</a>
+                                <div class="metadata">
+                                    <span class="date">今天下午 5:42</span>
+                                </div>
+                                <div class="text">太赞了！ </div>
+                                <div class="actions">
+                                    <a class="reply">Reply</a>
+                                </div>
+                            </div>
+                        </div>
+                        <!--*/-->
+                        <div class="comment" th:if="${#lists.size(commentList)}>0" th:each="commentFather:${commentList}">
+                            <a class="avatar">
+                                <img th:src="@{/images/touxiang.png}" src="/">
+                            </a>
+                            <div class="content">
+                                <a class="author" th:text="${commentFather.isBusiness}==1? '商家':${commentFather.user.nickname}">Elliot Fu</a>
+                                <div class="metadata">
+                                    <span class="date" th:text="${#dates.format(commentFather.commentTime,'yyyy-MM--dd HH:mm:ss')}">昨天上午12:30</span>
+                                </div>
+                                <div class="text" >
+                                    <p th:text="${commentFather.content}">這對我的研究是非常有用.謝謝!</p>
+                                </div>
+                                <div class="actions">
+                                    <a  class="reply" data-name="12"  th:attr="data-id=${commentFather.id},data-name=${commentFather.user.nickname}" onclick="reply0(this)">回复</a>
+                                </div>
+                            </div>
+                            <div class="comments" th:if="${commentFather}!=null" th:each="comment:${commentFather.replyCommentList}">
+                                <div class="comment">
+                                    <a class="avatar">
+                                        <img src="/images/avatar/small/jenny.jpg" th:src="@{/images/touxiang.png}">
+                                    </a>
+                                    <div class="content">
+                                        <span class="author" th:classappend="${comment.isBusiness}==1 ? 'teal'" th:text="${comment.isBusiness}==1 ? '商家回复' : ${comment.user.nickname}">Jenny Hess</span>
+                                        <span th:text="'@'+${comment.parentUser.nickname}"></span>
+                                        <div class="metadata">
+                                            <span class="date" th:text="${#dates.format(comment.commentTime,'yyyy-MM--dd HH:mm:ss')}">刚刚</span>
+                                        </div>
+                                        <div class="text" th:text="${comment.content}">艾略特你永远是多么正确 :) </div>
+                                        <div class="actions">
+                                            <a class="reply">回复</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--/*-->
+                        <div class="comment">
+                            <a class="avatar">
+                                <img src="/images/avatar/small/joe.jpg">
+                            </a>
+                            <div class="content">
+                                <a class="author">Joe Henderson</a>
+                                <div class="metadata">
+                                    <span class="date">5 天以前</span>
+                                </div>
+                                <div class="text">老兄，这太棒了。非常感谢。 </div>
+                                <div class="actions">
+                                    <a class="reply">Reply</a>
+                                </div>
+                            </div>
+                        </div>
+                        <!--*/-->
+
+                    </div>
+
+                </div>
+                <form id="form" th:if="${session.business}!=null and ${session.business.id}==${business.id}" class="ui form" th:action="@{/comments-business}" method="post">
+                    <input type="hidden" class="business_id" name="business_id" th:value="${business.id}">
+                    <input type="hidden" name="parentCommentId" value="-1" >
+                    <div class="field">
+                        <textarea name="content" placeholder=""></textarea>
+                    </div>
+                    <div id="s-btn" class="ui blue labeled submit icon button"><i class="icon edit"></i> 回复 </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+
+ </div>
+
+
+
+
+
+<footer class="ui inverted segment" th:replace="_fragments::footer">
+    <div class="ui center aligned container m-padding-massive">
+        <div class="ui inverted divided grid">
+            <div class="two wide column">
+                <img src="../static/images/weixin.png" class="ui rounded image img-style">
+            </div>
+            <div class="four wide column">
+                <div class="ui inverted list">
+                    <span class="item m-font-size letter-space">友情链接</span>
+                    <a href="" class="item letter-space"><span >饿了么</span></a>
+                    <a href="" class="item letter-space"><span >美团</span></a>
+                    <a href="" class="item letter-space"><span >百度</span></a>
+                </div>
+            </div>
+            <div class="four wide column">
+                <div class="ui inverted list">
+                    <span class="item m-font-size letter-space">服务商</span>
+                    <span class="item letter-space">安徽科技学院</span>
+                    <span class="item letter-space">王俊凯</span>
+                </div>
+            </div>
+            <div class="four wide column">
+                <div class="ui inverted list">
+                    <span class="item m-font-size letter-space">声明</span>
+                    <span class="item letter-space">用于学习练习</span>
+                    <span class="item letter-space">用于完成作业</span>
+                    <span class="item letter-space">用于应付毕业设计</span>
+                </div>
+            </div>
+            <div class="two wide column">
+                <img src="../static/images/qq.jpg" class="ui rounded image img-style">
+            </div>
+
+        </div>
+        <br>
+        <div class="ui inverted selection divider">
+            <p class="m-top-margin-small letter-space" style="opacity: 0.8!important;">Copyright @2019-2020  Designed By wjk</p>
+        </div>
+    </div>
+</footer>
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+<script src="../static/js/jqueryscrollto/jquery.scrollTo.min.js" th:src="@{/js/jqueryscrollto/jquery.scrollTo.min.js}"></script>
+<script src="../static/js/vue.js"></script>
+<script src="../static/js/jquery.fly.min.js" th:src="@{/js/jquery.fly.min.js}"></script>
+
+<!--<script>
+    let left=new Vue({
+        el:'#left',
+        data:{
+            items:[
+                {name:'面食1'},
+                {name:'面食2'},
+                {name:'面食3'},
+                {name:'面食4'},
+                {name:'面食5'},
+                {name:'面食6'},
+            ],
+
+        }
+    })
+    let right=new Vue({
+        el:'#right',
+        data:{
+            items:[
+                {name:left.items[0].name,list:[{name:'炒面1',price:'10元'},{name:'炒面1',price:'10元'},{name:'炒面1',price:'10元'}]},
+                {name:left.items[1].name,list:[{name:'炒面2',price:'10.0元'},{name:'炒面2',price:'10.0元'},{name:'炒面2',price:'10.0元'}]},
+                {name:left.items[2].name,list:[{name:'炒面3',price:'10.0元'},{name:'炒面3',price:'10.0元'},{name:'炒面3',price:'10.0元'}]},
+                {name:left.items[3].name,list:[{name:'炒面4',price:'10.0元'},{name:'炒面4',price:'10.0元'},{name:'炒面4',price:'10.0元'}]},
+                {name:left.items[4].name,list:[{name:'炒面5',price:'10.0元'},{name:'炒面5',price:'10.0元'},{name:'炒面5',price:'10.0元'}]},
+                {name:left.items[5].name,list:[{name:'炒面6',price:'10.0元'},{name:'炒面6',price:'10.0元'},{name:'炒面6',price:'10.0元'}]},
+            ]
+        }
+    })
+</script>-->
+
+<script>
+
+        $(window).scroll(function () {
+            if ($(window).scrollTop()>300){
+                $('.m-left').css('position','fixed');
+                $('.m-left').css('top',0)
+            } else {
+                $('.m-left').css('position','');
+            }
+        });
+
+        $('.left ul').on('click', 'li', function () {
+            $('.left ul li').removeClass('li-color')
+            $(this).addClass('li-color')
+            var i = $(this).index('.left ul li')
+            $('body,html').animate({scrollTop: $('.right ul li').eq(i).offset().top-40}, 1000)
+        })
+
+</script>
+
+<script>
+   $(function () {
+       var n=-1;
+       var prices=0;
+       var count=0;
+       var goodsCount=0;
+       var offset=$('#shop').offset()
+       $(window).resize(site)
+       function site(){
+           offset=$('#shop').offset()
+       }
+       $('.right ul li ').on('click','i',function () {
+           n++;
+           var i = $(this)
+           var goodsId=i.children().val()
+           var img = i.parent().parent().find('img').attr('src')
+           var img0=img.substr(6)
+           var flyer = $('<img class="u-flyer" src="' + img + '"/>')
+           flyer.fly({
+               start: {
+                   left: event.pageX,
+                   top: event.pageY
+               },
+               end: {
+                   left: offset.left,
+                   top: offset.top,
+                   width:0,
+                   height:0
+               },
+               onEnd:function () {
+
+               }
+           })
+           $('.count').html(++count)
+           var span=i.parent().parent().find('span')
+           var name=span.eq(0).text()
+           var price=parseInt(span.eq(1).text())
+           goodsCount=parseInt(span.eq(2).text())
+           var li=" <li>\n" +
+               "                                  <div class=\"ui segment\" >\n" +
+               "                                      <input type=\"hidden\" name=\"goodsList["+n+"].name\" value=\""+name+"\">\n" +
+               "                                      <input type=\"hidden\" name=\"goodsList["+n+"].count\" value=\""+goodsCount+"\">\n" +
+               "                                      <input type=\"hidden\" name=\"goodsList["+n+"].price\" value=\""+price+"\">\n" +
+               "                                      <input type=\"hidden\" name=\"goodsList["+n+"].id\" value=\""+goodsId+"\">\n" +
+               "                                      <div class=\"ui grid\">\n" +
+               "                                          <div class=\"five wide column\">\n" +
+               "                                              <img src=\""+img+"\" width=\"30px\">\n" +
+               "                                              <input type=\"hidden\" name=\"goodsList["+n+"].img\" value=\""+img0+"\">\n" +
+               "                                          </div>\n" +
+               "                                          <div class=\"center aligned eleven wide column\">\n" +
+               "                                              <span style=\"color: red\">"+name+"</span>\n" +
+               "                                              <i class=\"yen sign icon\"></i><span>"+price+"</span>\n" +
+               "                                              <i class=\"close teal icon\" style=\"margin-left: 10px\"></i>\n" +
+               "                                          </div>\n" +
+               "                                      </div>\n" +
+               "                                  </div>\n" +
+               "                              </li>"
+           $('.list1 ul').append(li)
+           prices=prices+price
+           $('.total').text(prices)
+       })
+
+       $('body').on('click','.close',function () {
+           n--;
+            count--;
+           $(this).parent().parent().parent().parent().empty()
+           var price=parseInt($(this).parent().find('span').eq(1).text())
+           prices=prices-price;
+           $('.total').text(prices)
+           $('.count').html(count)
+       })
+
+   })
+   //隐藏显示div
+$('.m-shopping').click(function () {
+
+    if ($('.list1').is(':hidden')){
+       $('.list1').show()
+    } else{
+        $('.list1').hide()
+    }
+})
+$('.pay').click(function () {
+
+    var startPrice=parseFloat($('.startPrice').val())
+    var total=parseFloat($('.total').text())
+    if(total>=startPrice){
+        $('.ui.form').submit()
+    }else {
+        alert("所购金额必须高于起送价")
+    }
+
+})
+   $('.m-background-rgb').mouseover(function () {
+       $(this).removeClass("m-background-rgb ")
+   })
+   $('.m-background-rgb').mouseout(function () {
+       $(this).addClass("m-background-rgb ")
+   })
+$('#content').hide()
+    $('#comment').click(function () {
+        if($('#content').is(":hidden")){
+            $('#content').show();
+        }else {
+            $('#content').hide()
+        }
+    })
+    $('#s-btn').click(function () {
+        if($("[name='content']").val()==""){
+            alert("请输入内容")
+        }
+        $('#comment-content').load("/comments-business",
+        {
+            "content":$("[name='content']").val(),
+            "business_id":$("[name='business_id']").val(),
+            "parentCommentId":$("[name='parentCommentId']").val()
+        },function () {
+               clearContent()
+                $.scrollTo('#comment-content',500)
+            }
+        )
+    })
+
+   function clearContent() {
+       $("[name='content']").val("");
+       $("[name='parentCommentId']").val(-1);
+       $("[name='content']").attr("placeholder","请输入评论内容");
+   }
+</script>
+<script>
+    var business_id=$('.business_id').val()
+
+    $('#comment-content').load("/c",{
+
+        "business_id":business_id
+    })
+    function reply0(obj){
+        var fatherNickname=$(obj).data('name')
+        var parentCommentId=$(obj).data('id')
+        $("[name='content']").attr("placeholder",'@'+fatherNickname)
+         $("[name='parentCommentId']").val(parentCommentId)
+        $.scrollTo('#form')
+    }
+</script>
+</body>
+</html>

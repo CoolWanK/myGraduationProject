@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+    <link rel="stylesheet" href="../static/css/me.css" th:href="@{/css/me.css}">
+</head>
+<body>
+<div class="ui container">
+    <div class="ui grid" th:fragment="3">
+        <div class="fifteen wide column">
+            <div class="ui segment">
+                <div class="ui two column grid">
+                    <div class="column">
+                        <h2 class="ui teal header">我的接单</h2>
+                    </div>
+                    <div class="ui right aligned column">
+                        <i class="bell outline icon"></i><span style="color: red">1</span>
+                    </div>
+                </div>
+            </div>
+            <div class="ui segment" th:unless="${#lists.isEmpty(pageInfo)}" th:each="orders:${pageInfo}">
+                <table class="ui celled table" >
+                    <thead>
+                    <tr><th></th>
+                        <th>姓名</th>
+                        <th>电话</th>
+                        <th>地址</th>
+                        <th>所订菜名</th>
+                        <th>样图</th>
+                        <th>价格</th>
+                        <th>下单时间</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="goods,goodsStatus:${orders.goodsList}">
+                        <th th:text="${goodsStatus.count}"></th>
+                        <th th:text="${orders.user.nickname}"></th>
+                        <th th:text="${orders.user.phone}"></th>
+                        <th th:text="${orders.user.address}"></th>
+                        <th th:text="${goods.name}"> </th>
+                        <th><img th:src="@{'/path/'+${goods.img}}" width="30px"></th>
+                        <td th:text="${goods.price}"></td>
+                        <th th:text="${#dates.format(orders.createTime,'yyyy-MM--dd HH:mm:ss')}"></th>
+                    </tr>
+                    </tbody>
+                    <tfoot>
+                    <tr>
+                        <th colspan="8">
+                            <div class="ui two column grid">
+                                <div class="column"></div>
+                                <div class="right aligned column">
+                                    <div th:if="${orders.user_time}==null"><a th:if="${orders.business_time}==null" th:href="@{/business/order-edit/{id}(id=${orders.id})}" class="ui teal button">确认接单</a>
+                                        <a th:if="${orders.business_time}!=null" class="ui teal basic button">已接单</a></div>
+                                    <a th:if="${orders.user_time}!=null" class="ui basic teal button">已完成订单</a><span th:if="${orders.user_time}!=null" class="ui basic black label" th:text="${#dates.format(orders.user_time,'yyyy-MM-dd HH:mm:ss')}">2019-12-13</span>
+
+                                </div>
+                            </div>
+                        </th>
+                    </tr>
+
+                    </tfoot>
+                </table>
+            </div>
+            <div class="ui basic segment">
+                <div class="ui two column grid">
+                    <div class="column"></div>
+                    <div class="right aligned column">
+                        <a th:href="@{/business/moreinfo/1}">查看更多</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+<script src="../static/js/jqueryscrollto/jquery.scrollTo.min.js"></script>
+<script>
+    $('.ui.dropdown').dropdown(
+        {
+            on:'click'
+        }
+    )
+    $("#file0").change(function(){
+        var file=this.files[0]
+        var img=/image\/\w+/;
+        if (!img.test(file.type)){
+            alert("请选择图片文件")
+        }
+        var objUrl = getObjectURL(this.files[0]) ;
+        
+        console.log("objUrl = "+objUrl) ;
+        if (objUrl)
+        {
+            $("#img0").attr("src", objUrl);
+            $("#img0").removeClass("hide");
+        }
+    }) ;
+    //建立一個可存取到該file的url
+    function getObjectURL(file)
+    {  
+        var url = null ;
+        if (window.createObjectURL!=undefined)
+        { // basic
+            url = window.createObjectURL(file) ;
+        }
+        else if (window.URL!=undefined)
+        {
+            // mozilla(firefox)
+            url = window.URL.createObjectURL(file) ;
+        }
+        else if (window.webkitURL!=undefined) {
+            // webkit or chrome
+            url = window.webkitURL.createObjectURL(file) ;
+        }
+        return url ;
+    }
+</script>
+</body>
+</html>

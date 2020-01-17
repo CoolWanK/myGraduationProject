@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+    <link rel="stylesheet" href="../static/css/me.css" th:href="@{/css/me.css}">
+</head>
+<body class="">
+
+<nav class="ui inverted segment m-padding-mini" th:replace="_fragments::head">
+    <div class="ui container">
+        <div class="ui grid">
+            <div class="eight wide column">
+                <div class="ui inverted basic  menu" >
+                    <a th:if="${session.user}==null" th:href="@{/user/login}" class="ui item" style="color: orangered!important;">请登�</a>
+                    <a th:href="@{/user/register}"  class="ui  item">免费注册</a>
+                    <a class="ui item"><i class="ui home icon"></i>订餐首页</a>
+                    <a class="ui item"><i class="ui idea icon"></i>商品分类</a>
+                </div>
+            </div>
+            <div class="  eight wide column">
+                <div class="ui inverted menu">
+                    <a th:href="@{/user/info}" class="ui item">
+                       个人中心
+                    </a>
+                    <a class="ui item"><i class="ui shopping cart icon"></i>购物�</a>
+                    <a class="ui item">联系客服</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</nav>
+<div class="ui container">
+    <div class="ui segment">
+        <div class="ui segment">
+            <div class="ui two column grid">
+                <div class="column">
+                    <div class="ui teal header">我的订单</div>
+                </div>
+                <div class="right aligned column">
+                    <a th:unless="${pageFirst}" th:href="@{/user/user-orders/{pageNum}(pageNum=${pageNum}-1)}" class="ui basic teal button">上一页</a>
+                    <a th:unless="${pageLast}" th:href="@{/user/user-orders/{pageNum}(pageNum=${pageNum}+1)}" class="ui basic teal button">下一页</a>
+                </div>
+            </div>
+
+        </div>
+        <div class="ui segment" th:unless="${#lists.isEmpty(pageInfo)}" th:each="order:${pageInfo}">
+            <table class="ui table">
+                <thead>
+                <tr>
+                    <th></th>
+                    <th>商家</th>
+                    <th>商品</th>
+                    <th>样图</th>
+                    <th>价格</th>
+                    <th>下单时间</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="goods,goodsStatus:${order.goodsList}">
+                    <td th:text="${goodsStatus.count}"></td>
+                    <td th:text="${order.business.nickname}">王俊凯</td>
+                    <td th:text="${goods.name}">王俊凯</td>
+                    <td ><img th:src="'/path/'+${goods.img}" width="40px"></td>
+                    <td th:text="${goods.price}"></td>
+                    <td th:text="${#dates.format(order.createTime,'yyyy-MM-dd HH:mm:ss')}">2019-11-06</td>
+                </tr>
+                </tbody>
+                <tfoot>
+                <tr>
+                    <th colspan="6">
+                        <div class="right aligned column">
+                            <div th:if="${order.business_order}!=1"> <a  th:href="@{/user/order-songDa/{id}(id=${order.id})}" class="ui teal button">确认送达</a>
+                                <a th:if="${order.business_time}!=null" class="ui teal button" >店家已接单</a>
+                                <a th:if="${order.business_time}==null" class="ui teal button" >店家尚未接单</a></div>
+                            <div th:if="${order.business_order}==1">
+                                <a class="ui teal basic button">订单已完成</a><span th:if="${order.user_time}!=null" class="ui basic black label" th:text="${#dates.format(order.user_time,'yyyy-MM-dd HH:mm:ss')}">2019-12-13</span>
+                            </div>
+
+                        </div>
+                    </th>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+        <!--/*-->
+        <div class="ui segment">
+            <table class="ui table">
+                <thead>
+                <tr>
+                    <th>姓名</th>
+                    <th>电话</th>
+                    <th>地址</th>
+                    <th>所订菜名</th>
+                    <th>下单时间</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>王俊凯</td>
+                    <td>18855324313</td>
+                    <td>安徽科技学院</td>
+                    <td>肉丝炒面</td>
+                    <td>2019-11-06</td>
+                </tr>
+                </tbody>
+                <tfoot>
+                <tr>
+                    <th colspan="5">
+                        <div class="right aligned column">
+                            <a class="ui teal button">确认接单</a>
+                            <a class="ui teal button" onclick="window.history.go(-1)">返回</a>
+                        </div>
+                    </th>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+        <div class="ui segment">
+            <table class="ui table">
+                <thead>
+                <tr>
+                    <th>姓名</th>
+                    <th>电话</th>
+                    <th>地址</th>
+                    <th>所订菜名</th>
+                    <th>下单时间</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>王俊凯</td>
+                    <td>18855324313</td>
+                    <td>安徽科技学院</td>
+                    <td>肉丝炒面</td>
+                    <td>2019-11-06</td>
+                </tr>
+                </tbody>
+                <tfoot>
+                <tr>
+                    <th colspan="5">
+                        <div class="right aligned column">
+                            <a class="ui teal button">确认接单</a>
+                            <a class="ui teal button" onclick="window.history.go(-1)">返回</a>
+                        </div>
+                    </th>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+        <div class="ui segment">
+            <table class="ui table">
+                <thead>
+                <tr>
+                    <th>姓名</th>
+                    <th>电话</th>
+                    <th>地址</th>
+                    <th>所订菜名</th>
+                    <th>下单时间</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>王俊凯</td>
+                    <td>18855324313</td>
+                    <td>安徽科技学院</td>
+                    <td>肉丝炒面</td>
+                    <td>2019-11-06</td>
+                </tr>
+                </tbody>
+                <tfoot>
+                <tr>
+                    <th colspan="5">
+                        <div class="right aligned column">
+                            <a class="ui teal button">确认接单</a>
+                            <a class="ui teal button" onclick="window.history.go(-1)">返回</a>
+                        </div>
+                    </th>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+        <div class="ui segment">
+            <table class="ui table">
+                <thead>
+                <tr>
+                    <th>姓名</th>
+                    <th>电话</th>
+                    <th>地址</th>
+                    <th>所订菜名</th>
+                    <th>下单时间</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>王俊凯</td>
+                    <td>18855324313</td>
+                    <td>安徽科技学院</td>
+                    <td>肉丝炒面</td>
+                    <td>2019-11-06</td>
+                </tr>
+                </tbody>
+                <tfoot>
+                <tr>
+                    <th colspan="5">
+                        <div class="right aligned column">
+                            <a class="ui teal button">确认接单</a>
+                            <a class="ui teal button" onclick="window.history.go(-1)">返回</a>
+                        </div>
+                    </th>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+        <!--*/-->
+
+    </div>
+</div>
+<footer class="ui inverted segment" th:replace="_fragments::footer">
+    <div class="ui center aligned container m-padding-massive">
+        <div class="ui inverted divided grid">
+            <div class="two wide column">
+                <img src="../static/images/weixin.png" class="ui rounded image img-style">
+            </div>
+            <div class="four wide column">
+                <div class="ui inverted list">
+                    <span class="item m-font-size letter-space">友情链接</span>
+                    <a href="" class="item letter-space"><span >饿了�</span></a>
+                    <a href="" class="item letter-space"><span >美团</span></a>
+                    <a href="" class="item letter-space"><span >百度</span></a>
+                </div>
+            </div>
+            <div class="four wide column">
+                <div class="ui inverted list">
+                    <span class="item m-font-size letter-space">商户中心</span>
+                    <a th:if="${session.business}==null" th:href="@{/business/register}" class="item letter-space">商户注册</a>
+                    <a th:if="${session.business}==null"  class="item letter-space">商户登录</a>
+                    <a th:href="@{/business/info}" class="item letter-space">商户中心</a>
+                </div>
+            </div>
+            <div class="four wide column">
+                <div class="ui inverted list">
+                    <span class="item m-font-size letter-space">声明</span>
+                    <span class="item letter-space">用于学习练习</span>
+                    <span class="item letter-space">用于完成作业</span>
+                    <span class="item letter-space">用于应付毕业设计</span>
+                </div>
+            </div>
+            <div class="two wide column">
+                <img src="../static/images/qq.jpg" class="ui rounded image img-style">
+            </div>
+
+        </div>
+        <br>
+        <div class="ui inverted selection divider">
+            <p class="m-top-margin-small letter-space" style="opacity: 0.8!important;">Copyright @2019-2020  Designed By wjk</p>
+        </div>
+    </div>
+</footer>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+<script src="../static/js/jqueryscrollto/jquery.scrollTo.min.js"></script>
+
+</body>
+</html>
